@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProvidersConfiguration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["providers"],
+  "properties": {
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "base_url",
+          "auth",
+          "limit_scope",
+          "openai_compatible",
+          "confidence",
+          "models"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "base_url": { "type": "string" },
+          "auth": { "type": "string" },
+          "limit_scope": {
+            "type": "string",
+            "enum": ["account", "per_model", "shared_pool"]
+          },
+          "openai_compatible": { "type": "boolean" },
+          "confidence": {
+            "type": "string",
+            "enum": ["live_console", "official", "official_dynamic", "unverified"]
+          },
+          "models": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "capabilities"],
+              "properties": {
+                "id": { "type": "string" },
+                "capabilities": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "limits": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "rpm": { "type": "number" },
+                    "tpm": { "type": "number" },
+                    "rpd": { "type": "number" },
+                    "tpd": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

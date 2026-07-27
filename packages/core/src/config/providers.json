@@ -1,0 +1,795 @@
+{
+  "providers": [
+    {
+      "id": "google_ai_studio",
+      "name": "Google AI Studio (Gemini API)",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "auth": "api_key",
+      "limit_scope": "per_model",
+      "openai_compatible": true,
+      "confidence": "live_console",
+      "models": [
+        {
+          "id": "gemini-2.5-flash",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 5, "tpm": 250000, "rpd": 20 }
+        },
+        {
+          "id": "gemini-2.5-flash-lite",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 10, "tpm": 250000, "rpd": 20 }
+        },
+        {
+          "id": "gemini-3-flash",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 5, "tpm": 250000, "rpd": 20 }
+        },
+        {
+          "id": "gemini-3.1-flash-lite",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 15, "tpm": 250000, "rpd": 500 }
+        },
+        {
+          "id": "gemini-3.5-flash",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 5, "tpm": 250000, "rpd": 20 }
+        },
+        {
+          "id": "gemini-3.5-flash-lite",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 15, "tpm": 250000, "rpd": 500 }
+        },
+        {
+          "id": "gemini-3.6-flash",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 5, "tpm": 250000, "rpd": 20 }
+        },
+        {
+          "id": "gemini-3.7-flash",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 5, "tpm": 250000, "rpd": 20 }
+        },
+        {
+          "id": "gemini-embedding-1",
+          "capabilities": ["embedding"],
+          "limits": { "rpm": 100, "tpm": 30000, "rpd": 1000 }
+        },
+        {
+          "id": "gemini-embedding-2",
+          "capabilities": ["embedding"],
+          "limits": { "rpm": 100, "tpm": 30000, "rpd": 1000 }
+        },
+        {
+          "id": "gemma-4-26b",
+          "capabilities": ["text", "tool_calling"],
+          "limits": { "rpm": 30, "tpm": 16000, "rpd": 14400 }
+        },
+        {
+          "id": "gemma-4-31b",
+          "capabilities": ["text", "tool_calling", "vision"],
+          "limits": { "rpm": 30, "tpm": 16000, "rpd": 14400 }
+        },
+        {
+          "id": "imagen-4-fast",
+          "capabilities": ["image_gen"],
+          "limits": { "rpd": 25 }
+        },
+        {
+          "id": "imagen-4",
+          "capabilities": ["image_gen"],
+          "limits": { "rpd": 25 }
+        },
+        {
+          "id": "imagen-4-ultra",
+          "capabilities": ["image_gen"],
+          "limits": { "rpd": 25 }
+        },
+        {
+          "id": "gemini-2.5-flash-tts",
+          "capabilities": ["text_to_speech"],
+          "limits": { "rpm": 3, "tpm": 10000, "rpd": 10 }
+        },
+        {
+          "id": "gemini-3.1-flash-tts",
+          "capabilities": ["text_to_speech"],
+          "limits": { "rpm": 3, "tpm": 10000, "rpd": 10 }
+        },
+        {
+          "id": "gemini-2.5-flash-native-audio-dialog",
+          "capabilities": ["speech_to_text", "text_to_speech"],
+          "limits": { "tpm": 1000000 }
+        },
+        {
+          "id": "gemini-3-flash-live",
+          "capabilities": ["speech_to_text", "text_to_speech"],
+          "limits": { "tpm": 65000 }
+        },
+        {
+          "id": "gemini-3.5-live-translate",
+          "capabilities": ["translation"],
+          "limits": { "tpm": 20000 }
+        },
+        {
+          "id": "antigravity",
+          "capabilities": ["tool_calling", "reasoning"],
+          "limits": { "rpm": 60, "tpm": 100000, "rpd": 100 }
+        }
+      ]
+    },
+    {
+      "id": "groq",
+      "name": "Groq",
+      "base_url": "https://api.groq.com/openai/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": true,
+      "confidence": "live_console",
+      "models": [
+        {
+          "id": "llama-3.1-8b-instant",
+          "capabilities": ["text", "tool_calling"],
+          "limits": { "rpm": 30, "tpm": 6000, "rpd": 14400, "tpd": 500000 }
+        },
+        {
+          "id": "llama-3.3-70b-versatile",
+          "capabilities": ["text", "tool_calling", "structured_output"],
+          "limits": { "rpm": 30, "tpm": 12000, "rpd": 1000, "tpd": 100000 }
+        },
+        {
+          "id": "openai/gpt-oss-120b",
+          "capabilities": ["text", "tool_calling", "structured_output", "reasoning"],
+          "limits": { "rpm": 30, "tpm": 8000, "rpd": 1000, "tpd": 200000 }
+        },
+        {
+          "id": "openai/gpt-oss-20b",
+          "capabilities": ["text", "tool_calling", "reasoning"],
+          "limits": { "rpm": 30, "tpm": 8000, "rpd": 1000, "tpd": 200000 }
+        },
+        {
+          "id": "qwen/qwen3.6-27b",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 30, "tpm": 8000, "rpd": 1000, "tpd": 200000 }
+        },
+        {
+          "id": "groq/compound",
+          "capabilities": ["text", "tool_calling", "reasoning"],
+          "limits": { "rpm": 30, "tpm": 70000, "rpd": 250 }
+        },
+        {
+          "id": "groq/compound-mini",
+          "capabilities": ["text", "tool_calling"],
+          "limits": { "rpm": 30, "tpm": 70000, "rpd": 250 }
+        },
+        {
+          "id": "whisper-large-v3",
+          "capabilities": ["speech_to_text"],
+          "limits": { "rpm": 20, "rpd": 2000 }
+        },
+        {
+          "id": "whisper-large-v3-turbo",
+          "capabilities": ["speech_to_text"],
+          "limits": { "rpm": 20, "rpd": 2000 }
+        }
+      ]
+    },
+    {
+      "id": "sambanova",
+      "name": "SambaNova Cloud",
+      "base_url": "https://api.sambanova.ai/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": true,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "DeepSeek-V3.1",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 20, "rpd": 20, "tpd": 200000 }
+        },
+        {
+          "id": "Meta-Llama-3.3-70B-Instruct",
+          "capabilities": ["text", "tool_calling"],
+          "limits": { "rpm": 20, "rpd": 20, "tpd": 200000 }
+        },
+        {
+          "id": "gpt-oss-120b",
+          "capabilities": ["text", "tool_calling", "reasoning"],
+          "limits": { "rpm": 20, "rpd": 20, "tpd": 200000 }
+        },
+        {
+          "id": "DeepSeek-V3.2",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 20, "rpd": 20, "tpd": 200000 }
+        },
+        {
+          "id": "gemma-4-31B-it",
+          "capabilities": ["text", "vision"],
+          "limits": { "rpm": 20, "rpd": 20, "tpd": 200000 }
+        }
+      ]
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter",
+      "base_url": "https://openrouter.ai/api/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": true,
+      "confidence": "live_console",
+      "models": [
+        {
+          "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+          "capabilities": ["text", "vision", "reasoning", "tool_calling"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "google/gemma-4-26b-a4b-it:free",
+          "capabilities": ["text", "tool_calling", "structured_output", "reasoning", "vision"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "nvidia/llama-nemotron-rerank-vl-1b-v2:free",
+          "capabilities": ["rerank", "vision"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "nvidia/nemotron-nano-9b-v2:free",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "openai/gpt-oss-20b:free",
+          "capabilities": ["text", "tool_calling", "reasoning", "structured_output"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "nvidia/nemotron-nano-12b-v2-vl:free",
+          "capabilities": ["vision", "text"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "nvidia/nemotron-3-embed-1b:free",
+          "capabilities": ["embedding"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "liquid/lfm-2.5-2.6b:free",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "nvidia/llama-nemotron-embed-vl-1b-v2:free",
+          "capabilities": ["embedding", "vision"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "google/gemma-4-31b-it:free",
+          "capabilities": ["text", "tool_calling", "reasoning", "vision"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "nvidia/nemotron-3.5-content-safety:free",
+          "capabilities": ["content_moderation", "vision"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "fish-audio/s2.1-pro-free:free",
+          "capabilities": ["text_to_speech"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "deepgram/flux-tts:free",
+          "capabilities": ["text_to_speech"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        },
+        {
+          "id": "openrouter/free",
+          "capabilities": ["text", "tool_calling", "structured_output", "vision"],
+          "limits": { "rpm": 20, "rpd": 50 }
+        }
+      ]
+    },
+    {
+      "id": "ovhcloud_ai_endpoints",
+      "name": "OVHcloud AI Endpoints",
+      "base_url": "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
+      "auth": "api_key",
+      "limit_scope": "per_model",
+      "openai_compatible": true,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "default",
+          "capabilities": ["text"],
+          "limits": { "rpm": 400 }
+        }
+      ]
+    },
+    {
+      "id": "cohere",
+      "name": "Cohere",
+      "base_url": "https://api.cohere.com/v2",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": false,
+      "confidence": "live_console",
+      "models": [
+        {
+          "id": "command-a",
+          "capabilities": ["text", "tool_calling", "structured_output"],
+          "limits": { "rpm": 20 }
+        },
+        {
+          "id": "command-a-plus",
+          "capabilities": ["text", "tool_calling", "structured_output"],
+          "limits": { "rpm": 20 }
+        },
+        {
+          "id": "command-a-reasoning",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 20 }
+        },
+        {
+          "id": "command-a-vision",
+          "capabilities": ["text", "vision"],
+          "limits": { "rpm": 20 }
+        },
+        {
+          "id": "command-r-plus",
+          "capabilities": ["text", "tool_calling", "structured_output"],
+          "limits": { "rpm": 20 }
+        },
+        {
+          "id": "command-r",
+          "capabilities": ["text", "tool_calling"],
+          "limits": { "rpm": 20 }
+        },
+        {
+          "id": "command-r7b",
+          "capabilities": ["text"],
+          "limits": { "rpm": 20 }
+        },
+        {
+          "id": "north-mini-code",
+          "capabilities": ["code", "tool_calling"],
+          "limits": { "rpm": 20 }
+        },
+        {
+          "id": "embed-4",
+          "capabilities": ["embedding"],
+          "limits": { "rpm": 2000 }
+        },
+        {
+          "id": "rerank-3.5",
+          "capabilities": ["rerank"],
+          "limits": { "rpm": 10 }
+        }
+      ]
+    },
+    {
+      "id": "nvidia_nim",
+      "name": "NVIDIA NIM",
+      "base_url": "https://integrate.api.nvidia.com/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": true,
+      "confidence": "live_console",
+      "models": [
+        {
+          "id": "nemotron-3-nano-30b-a3b",
+          "capabilities": ["text", "tool_calling", "reasoning", "code"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nemotron-3-super-120b-a12b",
+          "capabilities": ["text", "tool_calling", "reasoning", "code"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nemotron-3-ultra-550b-a55b",
+          "capabilities": ["text", "tool_calling", "reasoning", "code"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-3.3-70b-instruct",
+          "capabilities": ["text", "tool_calling"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-3.1-70b-instruct",
+          "capabilities": ["text"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-3.1-8b-instruct",
+          "capabilities": ["text"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "gpt-oss-120b",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "gpt-oss-20b",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "glm-5.2",
+          "capabilities": ["text", "tool_calling", "reasoning", "code"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "gemma-4-31b-it",
+          "capabilities": ["text", "tool_calling", "code"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "mistral-nemotron",
+          "capabilities": ["text", "tool_calling", "code"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-3.3-nemotron-super-49b-v1.5",
+          "capabilities": ["text", "tool_calling", "reasoning"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nvidia-nemotron-nano-9b-v2",
+          "capabilities": ["text", "reasoning"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "inkling",
+          "capabilities": ["text", "vision", "reasoning", "tool_calling"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "step-3.7-flash",
+          "capabilities": ["text", "vision", "reasoning", "code"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nemotron-3-nano-omni-30b-a3b-reasoning",
+          "capabilities": ["text", "vision", "speech_to_text", "reasoning"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "laguna-xs-2.1",
+          "capabilities": ["code", "tool_calling"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "muse-glimmer-30b",
+          "capabilities": ["vision", "text", "tool_calling", "reasoning"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-3.2-11b-vision-instruct",
+          "capabilities": ["vision", "text"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-3.2-90b-vision-instruct",
+          "capabilities": ["vision", "text"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nemotron-nano-12b-v2-vl",
+          "capabilities": ["vision", "text"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-3.1-nemotron-nano-vl-8b-v1",
+          "capabilities": ["vision", "text"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "paligemma",
+          "capabilities": ["vision", "text"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nemotron-3-embed-1b",
+          "capabilities": ["embedding"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nv-embed-v1",
+          "capabilities": ["embedding"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nv-embedcode-7b-v1",
+          "capabilities": ["embedding", "code"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "rerank-qa-mistral-4b",
+          "capabilities": ["rerank"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "riva-translate-4b-instruct-v2",
+          "capabilities": ["translation"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "riva-translate-4b-instruct-v1_1",
+          "capabilities": ["translation"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "magpie-tts-zeroshot",
+          "capabilities": ["text_to_speech"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nemotron-voicechat",
+          "capabilities": ["speech_to_text", "text_to_speech"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-guard-4-12b",
+          "capabilities": ["content_moderation", "vision"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "nemotron-3.5-content-safety",
+          "capabilities": ["content_moderation", "vision"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "llama-3.1-nemotron-safety-guard-8b-v3",
+          "capabilities": ["content_moderation"],
+          "limits": { "rpm": 40 }
+        },
+        {
+          "id": "esm2-650m",
+          "capabilities": ["embedding"],
+          "limits": { "rpm": 40 }
+        }
+      ]
+    },
+    {
+      "id": "opencode_zen",
+      "name": "OpenCode Zen",
+      "base_url": "https://opencode.ai/zen/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": true,
+      "confidence": "live_console",
+      "models": [
+        {
+          "id": "big-pickle",
+          "capabilities": ["code", "tool_calling"]
+        },
+        {
+          "id": "deepseek-v4-flash",
+          "capabilities": ["code", "text"]
+        },
+        {
+          "id": "mimo-v2.5",
+          "capabilities": ["code", "text"]
+        },
+        {
+          "id": "hy3",
+          "capabilities": ["code", "text"]
+        },
+        {
+          "id": "laguna-s-2.1",
+          "capabilities": ["code", "tool_calling"]
+        },
+        {
+          "id": "nemotron-3-ultra",
+          "capabilities": ["code", "reasoning"]
+        },
+        {
+          "id": "nemotron-3.5-lightning",
+          "capabilities": ["code", "text"]
+        }
+      ]
+    },
+    {
+      "id": "jina_ai",
+      "name": "Jina AI",
+      "base_url": "https://api.jina.ai/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": false,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "jina-embeddings-v3",
+          "capabilities": ["embedding"]
+        },
+        {
+          "id": "jina-reranker-v2",
+          "capabilities": ["rerank"]
+        }
+      ]
+    },
+    {
+      "id": "bazaarlink_ai",
+      "name": "Bazaarlink.ai",
+      "base_url": "https://api.bazaarlink.ai/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": true,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "deepseek/deepseek-v4-flash",
+          "capabilities": ["text", "code"],
+          "limits": { "rpm": 10, "rpd": 50 }
+        },
+        {
+          "id": "qwen/qwen3.7-flash",
+          "capabilities": ["text"],
+          "limits": { "rpm": 10, "rpd": 50 }
+        }
+      ]
+    },
+    {
+      "id": "aimlapi",
+      "name": "aimlapi.com",
+      "base_url": "https://api.aimlapi.com/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": true,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "google/gemma-3-27b-it",
+          "capabilities": ["text"]
+        },
+        {
+          "id": "mistral/leanstral-1-5",
+          "capabilities": ["text"]
+        }
+      ]
+    },
+    {
+      "id": "voyage_ai",
+      "name": "Voyage AI",
+      "base_url": "https://api.voyageai.com/v1",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": false,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "voyage-4",
+          "capabilities": ["embedding"],
+          "limits": { "rpm": 2000 }
+        }
+      ]
+    },
+    {
+      "id": "huggingface",
+      "name": "Hugging Face Inference",
+      "base_url": "https://api-inference.huggingface.co/v1",
+      "auth": "api_key",
+      "limit_scope": "shared_pool",
+      "openai_compatible": true,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "meta-llama/Llama-3.3-70B-Instruct",
+          "capabilities": ["text", "tool_calling"]
+        },
+        {
+          "id": "black-forest-labs/FLUX.1-schnell",
+          "capabilities": ["image_gen"]
+        }
+      ]
+    },
+    {
+      "id": "cloudflare_workers_ai",
+      "name": "Cloudflare Workers AI",
+      "base_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/",
+      "auth": "api_token",
+      "limit_scope": "shared_pool",
+      "openai_compatible": false,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "@cf/black-forest-labs/flux-1-schnell",
+          "capabilities": ["image_gen"]
+        },
+        {
+          "id": "@cf/baai/bge-base-en-v1.5",
+          "capabilities": ["embedding"]
+        }
+      ]
+    },
+    {
+      "id": "google_cloud",
+      "name": "Google Cloud Platform Services",
+      "base_url": "https://content.googleapis.com",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": false,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "google-translate-v3",
+          "capabilities": ["translation"]
+        },
+        {
+          "id": "google-speech-to-text-v1",
+          "capabilities": ["speech_to_text"]
+        },
+        {
+          "id": "google-text-to-speech-v1",
+          "capabilities": ["text_to_speech"]
+        },
+        {
+          "id": "google-vision-v1",
+          "capabilities": ["vision", "image_analysis"]
+        }
+      ]
+    },
+    {
+      "id": "mymemory",
+      "name": "MyMemory Translation",
+      "base_url": "https://api.mymemory.translated.net",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": false,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "mymemory-nmt",
+          "capabilities": ["translation"]
+        }
+      ]
+    },
+    {
+      "id": "unstructured_io",
+      "name": "Unstructured.io",
+      "base_url": "https://api.unstructuredapp.io",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": false,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "unstructured-v0",
+          "capabilities": ["document_processing"]
+        }
+      ]
+    },
+    {
+      "id": "exa_ai",
+      "name": "Exa AI Search",
+      "base_url": "https://api.exa.ai",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": false,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "exa-search",
+          "capabilities": ["web_search"]
+        }
+      ]
+    },
+    {
+      "id": "tavily",
+      "name": "Tavily Search",
+      "base_url": "https://api.tavily.com",
+      "auth": "api_key",
+      "limit_scope": "account",
+      "openai_compatible": false,
+      "confidence": "official",
+      "models": [
+        {
+          "id": "tavily-search",
+          "capabilities": ["web_search"]
+        }
+      ]
+    }
+  ]
+}
