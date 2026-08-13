@@ -1,0 +1,68 @@
+name: Publish Packages
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (simulate publishing without actual push to npm registry)"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  publish:
+    name: Build, Test & Publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Packages in Topological Order
+        run: npm run build
+
+      - name: Typecheck Workspaces
+        run: npm run typecheck
+
+      - name: Run Test Suite
+        run: npm test
+
+      - name: Publish Packages (Dry Run)
+        if: ${{ inputs.dry_run == true }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "Simulating npm publish across all workspace packages..."
+          npm publish --workspace=@free-ai-gateway/core --access public --dry-run
+          npm publish --workspace=@free-ai-gateway/skills --access public --dry-run
+          npm publish --workspace=@free-ai-gateway/mcp --access public --dry-run
+          npm publish --workspace=@free-ai-gateway/cli --access public --dry-run
+          npm publish --workspace=@free-ai-gateway/gateway --access public --dry-run
+
+      - name: Publish Packages to npm
+        if: ${{ inputs.dry_run != true }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish --workspace=@free-ai-gateway/core --access public
+          npm publish --workspace=@free-ai-gateway/skills --access public
+          npm publish --workspace=@free-ai-gateway/mcp --access public
+          npm publish --workspace=@free-ai-gateway/cli --access public
+          npm publish --workspace=@free-ai-gateway/gateway --access public
