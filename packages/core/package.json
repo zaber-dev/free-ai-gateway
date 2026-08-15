@@ -1,0 +1,48 @@
+{
+  "name": "@free-ai-gateway/core",
+  "version": "1.0.0",
+  "description": "Protocol-neutral AI provider routing, resilience, and capability orchestration engine.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test"
+  },
+  "keywords": [
+    "ai",
+    "router",
+    "llm",
+    "resilience",
+    "circuit-breaker",
+    "quota-tracker",
+    "free-tier",
+    "capabilities"
+  ],
+  "author": "Md. Mahedi Zaman Zaber <https://github.com/zaber-dev>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaber-dev/free-ai-gateway.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/zaber-dev/free-ai-gateway/tree/main/packages/core#readme",
+  "files": [
+    "dist",
+    "src/config/providers.json",
+    "src/config/providers.schema.json"
+  ],
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
