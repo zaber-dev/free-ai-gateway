@@ -1,0 +1,50 @@
+{
+  "name": "free-ai-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise-grade capability-routed AI gateway aggregating free-tier AI APIs into reusable packages, MCP servers, and OpenAI-compatible HTTP proxies.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=@free-ai-gateway/core && npm run build --workspace=@free-ai-gateway/skills && npm run build --workspace=@free-ai-gateway/mcp && npm run build --workspace=@free-ai-gateway/cli && npm run build --workspace=@free-ai-gateway/gateway",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces && tsx --test tests/e2e/monorepo.test.ts",
+    "dev": "npm run dev --workspace=@free-ai-gateway/gateway",
+    "start": "npm run start --workspace=@free-ai-gateway/gateway"
+  },
+  "keywords": [
+    "ai",
+    "llm",
+    "ai-gateway",
+    "proxy",
+    "mcp",
+    "model-context-protocol",
+    "openai-compatible",
+    "router",
+    "resilience",
+    "circuit-breaker",
+    "quota-tracker",
+    "free-tier"
+  ],
+  "author": "Md. Mahedi Zaman Zaber <https://github.com/zaber-dev>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaber-dev/free-ai-gateway.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zaber-dev/free-ai-gateway/issues"
+  },
+  "homepage": "https://github.com/zaber-dev/free-ai-gateway#readme",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
