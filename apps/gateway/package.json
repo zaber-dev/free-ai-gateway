@@ -1,0 +1,49 @@
+{
+  "name": "@free-ai-gateway/gateway",
+  "version": "1.0.0",
+  "description": "High-throughput Fastify HTTP AI gateway providing OpenAI-compatible endpoints with capability routing and auto-discovery.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "free-ai-gateway": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test"
+  },
+  "keywords": [
+    "ai-gateway",
+    "openai-compatible",
+    "proxy",
+    "fastify",
+    "router",
+    "free-tier"
+  ],
+  "author": "Md. Mahedi Zaman Zaber <https://github.com/zaber-dev>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaber-dev/free-ai-gateway.git",
+    "directory": "apps/gateway"
+  },
+  "homepage": "https://github.com/zaber-dev/free-ai-gateway/tree/main/apps/gateway#readme",
+  "dependencies": {
+    "@free-ai-gateway/core": "*",
+    "dotenv": "^17.4.2",
+    "fastify": "^5.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
