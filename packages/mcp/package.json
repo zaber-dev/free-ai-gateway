@@ -1,0 +1,45 @@
+{
+  "name": "@free-ai-gateway/mcp",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) server providing capability-routed AI tools and resources for agents.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "free-ai-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "tools",
+    "free-tier",
+    "agent"
+  ],
+  "author": "Md. Mahedi Zaman Zaber <https://github.com/zaber-dev>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaber-dev/free-ai-gateway.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://github.com/zaber-dev/free-ai-gateway/tree/main/packages/mcp#readme",
+  "dependencies": {
+    "@free-ai-gateway/core": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
