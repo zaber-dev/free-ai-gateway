@@ -18,6 +18,28 @@ describe("Gateway HTTP Server Integration", () => {
     assert.ok(response.headers["x-response-time"]);
   });
 
+  it("GET /metrics should return Prometheus formatted metrics", async () => {
+    const { server, metricsTracker } = createServer();
+    metricsTracker.recordSuccess("groq", 120);
+
+    const response = await server.inject({
+      method: "GET",
+      url: "/metrics",
+    });
+
+    assert.equal(response.statusCode, 200);
+    assert.ok(response.headers["content-type"]?.includes("text/plain"));
+    const body = response.body;
+
+    assert.ok(body.includes("free_ai_gateway_active_providers_count 19"));
+    assert.ok(body.includes("free_ai_gateway_circuit_breaker_state"));
+    assert.ok(body.includes("free_ai_gateway_requests_total"));
+    assert.ok(body.includes('free_ai_gateway_requests_total{provider="groq",status="success"} 1'));
+    assert.ok(body.includes("free_ai_gateway_request_duration_seconds"));
+    assert.ok(body.includes("free_ai_gateway_provider_health_state"));
+    assert.ok(body.includes("free_ai_gateway_uptime_seconds"));
+  });
+
   it("GET /v1/models should return OpenAI-compatible list of models", async () => {
     const { server } = createServer();
     const response = await server.inject({
