@@ -6,7 +6,7 @@ export class NvidiaNimAdapter extends BaseProvider {
   public static readonly providerId = "nvidia_nim";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.NVIDIA_API_KEY;
+    const apiKey = this.getApiKey("NVIDIA_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing NVIDIA_API_KEY", 401);
     }

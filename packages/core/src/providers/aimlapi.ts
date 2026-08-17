@@ -6,7 +6,7 @@ export class AimlApiAdapter extends BaseProvider {
   public static readonly providerId = "aimlapi";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.AIMLAPI_API_KEY;
+    const apiKey = this.getApiKey("AIMLAPI_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing AIMLAPI_API_KEY", 401);
     }

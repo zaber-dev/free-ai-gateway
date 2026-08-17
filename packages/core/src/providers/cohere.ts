@@ -6,7 +6,7 @@ export class CohereAdapter extends BaseProvider {
   public static readonly providerId = "cohere";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.COHERE_API_KEY;
+    const apiKey = this.getApiKey("COHERE_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing COHERE_API_KEY", 401);
     }

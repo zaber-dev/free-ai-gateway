@@ -11,7 +11,7 @@ export interface QuotaBucket {
 }
 
 /**
- * Sliding-window quota tracker with proactive RPM/RPD checking and state snapshotting.
+ * Sliding-window quota tracker with proactive RPM/RPD checking, multi-key isolation, and state snapshotting.
  */
 export class QuotaTracker {
   private buckets = new Map<string, QuotaBucket>();
@@ -22,8 +22,9 @@ export class QuotaTracker {
     this.loadSnapshot();
   }
 
-  private getKey(providerId: string, modelId: string, scope: LimitScope): string {
-    return scope === "per_model" ? `${providerId}:${modelId}` : providerId;
+  private getKey(providerId: string, modelId: string, scope: LimitScope, apiKey?: string): string {
+    const keyPrefix = apiKey ? `${providerId}:key_${apiKey.slice(-6)}` : providerId;
+    return scope === "per_model" ? `${keyPrefix}:${modelId}` : keyPrefix;
   }
 
   private getBucket(key: string): QuotaBucket {
@@ -60,9 +61,10 @@ export class QuotaTracker {
     providerId: string,
     modelId: string,
     scope: LimitScope,
-    limits?: RateLimitSpec
+    limits?: RateLimitSpec,
+    apiKey?: string
   ): boolean {
-    const key = this.getKey(providerId, modelId, scope);
+    const key = this.getKey(providerId, modelId, scope, apiKey);
     const bucket = this.getBucket(key);
 
     if (bucket.exhaustedUntil && Date.now() < bucket.exhaustedUntil) {
@@ -83,9 +85,10 @@ export class QuotaTracker {
   public recordUsage(
     providerId: string,
     modelId: string,
-    scope: LimitScope
+    scope: LimitScope,
+    apiKey?: string
   ): void {
-    const key = this.getKey(providerId, modelId, scope);
+    const key = this.getKey(providerId, modelId, scope, apiKey);
     const bucket = this.getBucket(key);
     bucket.requestsThisMinute += 1;
     bucket.requestsToday += 1;
@@ -95,9 +98,10 @@ export class QuotaTracker {
     providerId: string,
     modelId: string,
     scope: LimitScope,
-    retryAfterMs = 60_000
+    retryAfterMs = 60_000,
+    apiKey?: string
   ): void {
-    const key = this.getKey(providerId, modelId, scope);
+    const key = this.getKey(providerId, modelId, scope, apiKey);
     const bucket = this.getBucket(key);
     bucket.exhaustedUntil = Date.now() + retryAfterMs;
   }

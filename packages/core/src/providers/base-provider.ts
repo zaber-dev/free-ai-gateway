@@ -22,6 +22,11 @@ export abstract class BaseProvider implements ProviderAdapter {
   public static readonly providerId: string;
 
   /**
+   * Internal round-robin index per provider for multi-key distribution.
+   */
+  private static keyIndices = new Map<string, number>();
+
+  /**
    * Dedicated HTTP transport client with built-in retry and timeout management.
    */
   protected readonly http: HttpClient;
@@ -45,6 +50,43 @@ export abstract class BaseProvider implements ProviderAdapter {
    */
   public supports(capability: Capability): boolean {
     return this.config.models.some((m) => m.capabilities.includes(capability));
+  }
+
+  /**
+   * Resolves the API key(s) configured for this provider from environment variables.
+   * Supports comma-separated multi-key pools (e.g. GROQ_API_KEY=key1,key2,key3).
+   */
+  public getApiKeys(envVarName?: string): string[] {
+    const defaultVar = this.config.id.toUpperCase().replace(/[^A-Z0-9_]/g, "_") + "_API_KEY";
+    const varName = envVarName || defaultVar;
+    let raw = process.env[varName];
+    if (!raw && this.config.id === "google_ai_studio") {
+      raw = process.env.GOOGLE_API_KEY;
+    }
+    if (!raw && this.config.id === "google_cloud") {
+      raw = process.env.GCP_API_KEY || process.env.GOOGLE_API_KEY;
+    }
+    if (!raw) return [];
+    return raw
+      .split(",")
+      .map((k) => k.trim())
+      .filter((k) => k.length > 0);
+  }
+
+  /**
+   * Retrieves an active API key using round-robin rotation across available keys.
+   * If a specific keyIndex is passed, uses that key directly.
+   */
+  public getApiKey(envVarName?: string, keyIndex?: number): string | undefined {
+    const keys = this.getApiKeys(envVarName);
+    if (keys.length === 0) return undefined;
+    if (typeof keyIndex === "number") {
+      return keys[Math.abs(keyIndex) % keys.length];
+    }
+    const currentIdx = BaseProvider.keyIndices.get(this.config.id) ?? 0;
+    const key = keys[currentIdx % keys.length];
+    BaseProvider.keyIndices.set(this.config.id, (currentIdx + 1) % keys.length);
+    return key;
   }
 
   /**

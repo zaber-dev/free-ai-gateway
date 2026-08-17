@@ -6,7 +6,7 @@ export class GroqAdapter extends BaseProvider {
   public static readonly providerId = "groq";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = this.getApiKey("GROQ_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing GROQ_API_KEY", 401);
     }
