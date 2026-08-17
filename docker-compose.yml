@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  free-ai-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: free-ai-gateway
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./state:/app/state
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
