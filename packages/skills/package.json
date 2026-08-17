@@ -1,0 +1,45 @@
+{
+  "name": "@free-ai-gateway/skills",
+  "version": "1.0.0",
+  "description": "Agentic IDE skills and installer CLI for Antigravity, Claude, Cursor, and Copilot.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "free-ai-skills": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('node:fs').cpSync('src/skills', 'dist/skills', { recursive: true })\"",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test"
+  },
+  "keywords": [
+    "ai",
+    "skills",
+    "agentic",
+    "antigravity",
+    "claude",
+    "cursor",
+    "copilot",
+    "mcp"
+  ],
+  "author": "Md. Mahedi Zaman Zaber <https://github.com/zaber-dev>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaber-dev/free-ai-gateway.git",
+    "directory": "packages/skills"
+  },
+  "homepage": "https://github.com/zaber-dev/free-ai-gateway/tree/main/packages/skills#readme",
+  "files": [
+    "dist",
+    "src/skills"
+  ],
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
