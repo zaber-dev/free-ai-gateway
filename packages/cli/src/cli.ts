@@ -1,6 +1,6 @@
 import { promptCommand, PromptOptions } from "./commands/prompt";
 import { chatCommand, ChatOptions } from "./commands/chat";
-import { listModelsCommand } from "./commands/models";
+import { listModelsCommand, ModelsOptions } from "./commands/models";
 import { doctorCommand } from "./commands/doctor";
 import { skillsCommand } from "./commands/skills";
 
@@ -23,6 +23,7 @@ Options:
   --capability=<cap>    Required capability (e.g. text, reasoning, code, vision, tool_calling)
   --provider=<id>       Force preferred provider (e.g. groq, google, sambanova, openrouter)
   --model=<id>          Force preferred model identifier
+  --format=<format>     Output format for models command: text, json, markdown
   --help, -h            Show this help manual
   --version, -v         Display CLI version
 
@@ -31,6 +32,8 @@ Examples:
   free-ai prompt "Write a quicksort in TypeScript" --capability=code
   free-ai chat --capability=reasoning
   free-ai models
+  free-ai models --format=json
+  free-ai models --format markdown
   free-ai doctor
   free-ai skills install --target=antigravity
 `);
@@ -50,7 +53,18 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<vo
   }
 
   if (command === "models") {
-    listModelsCommand();
+    const modelsOpts: ModelsOptions = {};
+    const rest = argv.slice(1);
+    for (let i = 0; i < rest.length; i++) {
+      const arg = rest[i];
+      if (arg.startsWith("--format=")) {
+        modelsOpts.format = arg.replace("--format=", "");
+      } else if (arg === "--format" && rest[i + 1]) {
+        modelsOpts.format = rest[i + 1];
+        i++;
+      }
+    }
+    listModelsCommand(modelsOpts);
     return;
   }
 
