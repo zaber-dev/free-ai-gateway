@@ -401,3 +401,8 @@ Created and maintained with ❤️ by **[Md. Mahedi Zaman Zaber](https://github.
 
 This project is open source and available under the [MIT License](LICENSE).
 
+
+
+## docs: Add Postman and Bruno API collection for capability endpoints
+
+Documentation reference and guidelines for #7.
