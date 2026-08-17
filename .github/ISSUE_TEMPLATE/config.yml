@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Architecture & Developer Guide (LEARN.md)
+    url: https://github.com/zaber-dev/free-ai-gateway/blob/main/LEARN.md
+    about: Read our comprehensive guide on capability routing, resilience, and MCP integration before opening an issue.
+  - name: 💬 GitHub Community Discussions
+    url: https://github.com/zaber-dev/free-ai-gateway/discussions
+    about: Ask questions, share ideas, showcase projects, and connect with other developers.
+  - name: 🔒 Report a Security Vulnerability
+    url: https://github.com/zaber-dev/free-ai-gateway/security/advisories/new
+    about: Privately disclose sensitive security vulnerabilities according to our SECURITY.md policy.

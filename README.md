@@ -376,18 +376,28 @@ free-ai-gateway/
 
 ---
 
-## 🤝 Contributing
+---
 
-Contributions are warmly welcome! Please check our [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+## 🤝 Community & Governance
+
+- 📖 **[Architecture Blueprint](ARCHITECTURE.md)**: Deep dive into the internal system design and data flow.
+- 🎓 **[Developer & Learning Guide](LEARN.md)**: Tutorials, programmatic usage, and SDK patterns.
+- 🗺️ **[Product Roadmap](ROADMAP.md)**: Planned milestones, distributed state, and upcoming features.
+- 💬 **[Support Guide](SUPPORT.md)**: Troubleshooting, community discussions, and help channels.
+- 🏛️ **[Project Governance](GOVERNANCE.md)**: Decision-making process, maintainer roles, and release policies.
+- ✍️ **[Contributing Guide](CONTRIBUTING.md)**: Step-by-step instructions for adding new provider adapters.
+- 🔒 **[Security Policy](SECURITY.md)**: Vulnerability disclosure guidelines.
+- 📜 **[Code of Conduct](CODE_OF_CONDUCT.md)**: Community standards and expectations.
 
 ---
 
 ## 👤 Author
 
-Created and maintained by **[Md. Mahedi Zaman Zaber](https://github.com/zaber-dev)**.
+Created and maintained with ❤️ by **[Md. Mahedi Zaman Zaber](https://github.com/zaber-dev)**.
 
 ---
 
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
