@@ -18,6 +18,7 @@ Welcome to the definitive learning guide for **Free-AI Gateway**! Whether you ar
    - [Tutorial 2: Adding a Custom Provider Adapter](#tutorial-2-adding-a-custom-provider-adapter)
    - [Tutorial 3: Connecting Your IDE (Cursor, Claude, Antigravity)](#tutorial-3-connecting-your-ide-cursor-claude-antigravity)
    - [Tutorial 4: Terminal AI & REPL with the CLI](#tutorial-4-terminal-ai--repl-with-the-cli)
+   - [Tutorial 5: Next.js 14+ App Router & Vercel AI SDK Integration](#tutorial-5-nextjs-14-app-router--vercel-ai-sdk-integration)
 9. [Advanced Patterns & FAQ](#-advanced-patterns--faq)
 
 ---
@@ -394,6 +395,72 @@ free-ai doctor
 # Search available models for structured output
 free-ai models --capability structured_output
 ```
+
+---
+
+### Tutorial 5: Next.js 14+ App Router & Vercel AI SDK Integration
+
+Free-AI Gateway provides full OpenAI compatibility, making it seamless to integrate into Next.js 14+ App Router applications with streaming and the Vercel AI SDK.
+
+#### 1. Setup Next.js Route Handler (`app/api/chat/route.ts`)
+```typescript
+import { OpenAIStream, StreamingTextResponse } from 'ai';
+import OpenAI from 'openai';
+
+// Point standard OpenAI SDK to local Free-AI Gateway
+const openai = new OpenAI({
+  apiKey: process.env.FREE_AI_API_KEY || 'free-ai-gateway-local',
+  baseURL: process.env.FREE_AI_GATEWAY_URL || 'http://localhost:3000/v1',
+});
+
+export const runtime = 'nodejs';
+
+export async function POST(req: Request) {
+  const { messages, model = 'groq/llama-3.3-70b-versatile' } = await req.json();
+
+  const response = await openai.chat.completions.create({
+    model,
+    stream: true,
+    messages,
+  });
+
+  const stream = OpenAIStream(response);
+  return new StreamingTextResponse(stream);
+}
+```
+
+#### 2. Streaming UI Component (`app/page.tsx`)
+```tsx
+'use client';
+
+import { useChat } from 'ai/react';
+
+export default function Chat() {
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
+
+  return (
+    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+      {messages.map(m => (
+        <div key={m.id} className="whitespace-pre-wrap">
+          {m.role === 'user' ? 'User: ' : 'AI: '}
+          {m.content}
+        </div>
+      ))}
+
+      <form onSubmit={handleSubmit}>
+        <input
+          className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
+          value={input}
+          placeholder="Say something..."
+          onChange={handleInputChange}
+        />
+      </form>
+    </div>
+  );
+}
+```
+
+Check out the complete runnable template in [`examples/nextjs-chat/`](examples/nextjs-chat/).
 
 ---
 
