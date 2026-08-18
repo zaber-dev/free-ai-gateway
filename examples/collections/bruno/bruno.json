@@ -1,0 +1,7 @@
+version = "1"
+name = "Free-AI Gateway"
+type = "collection"
+ignore = [
+  "node_modules",
+  ".git"
+]

@@ -1,0 +1,22 @@
+meta {
+  name: Document Parse
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/documents/parse
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "document_url": "https://example.com/sample.pdf",
+    "extract_images": false
+  }
+}

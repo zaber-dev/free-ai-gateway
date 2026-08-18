@@ -1,0 +1,23 @@
+meta {
+  name: Translation
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/v1/translate
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "text": "Welcome to Free AI Gateway. Connecting open source intelligence.",
+    "source_lang": "en",
+    "target_lang": "es"
+  }
+}

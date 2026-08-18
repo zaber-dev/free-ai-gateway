@@ -1,0 +1,28 @@
+meta {
+  name: Code Completion
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v1/chat/completions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "model": "auto:code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a TypeScript function to debounce an async API call."
+      }
+    ],
+    "temperature": 0.2
+  }
+}

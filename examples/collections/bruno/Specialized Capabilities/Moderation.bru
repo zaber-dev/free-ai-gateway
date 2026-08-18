@@ -1,0 +1,21 @@
+meta {
+  name: Content Moderation
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v1/moderate
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "input": "This is a clean, helpful, and safe test prompt for content moderation."
+  }
+}

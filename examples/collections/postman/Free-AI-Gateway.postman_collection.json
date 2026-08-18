@@ -1,0 +1,501 @@
+{
+  "info": {
+    "_postman_id": "7b8f9e01-c872-4b2a-9f4a-89a101f3e792",
+    "name": "Free-AI Gateway",
+    "description": "Comprehensive API collection for testing all OpenAI-compatible and capability endpoints supported by Free-AI Gateway.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "apiKey",
+      "value": "sk-free-ai-gateway",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "System & Health",
+      "item": [
+        {
+          "name": "Health Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Returns uptime, provider counts, and health metrics."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Providers & Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/providers",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "providers"]
+            },
+            "description": "Lists all registered provider adapters, circuit breaker statuses, and quota limits."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Models",
+      "item": [
+        {
+          "name": "List Available Models",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v1/models",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "models"]
+            },
+            "description": "Lists OpenAI-compatible models available across active providers."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Chat Completions",
+      "item": [
+        {
+          "name": "Standard Chat Completion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"auto:text\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a helpful and concise AI assistant.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Explain the Model Context Protocol (MCP) in 2 sentences.\"\n    }\n  ],\n  \"temperature\": 0.7,\n  \"max_tokens\": 256\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/chat/completions",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "chat", "completions"]
+            },
+            "description": "Standard conversational chat completion routed through optimal active provider."
+          },
+          "response": []
+        },
+        {
+          "name": "Code Generation & Reasoning",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"auto:code\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Write a TypeScript function to debounce an async API call.\"\n    }\n  ],\n  \"temperature\": 0.2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/chat/completions",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "chat", "completions"]
+            },
+            "description": "Targeting code capability models (e.g. Qwen Coder, DeepSeek Coder)."
+          },
+          "response": []
+        },
+        {
+          "name": "Streaming Chat Completion (SSE)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"auto:text\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Count from 1 to 5 slowly.\"\n    }\n  ],\n  \"stream\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/chat/completions",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "chat", "completions"]
+            },
+            "description": "Server-Sent Events streaming chat completion response."
+          },
+          "response": []
+        },
+        {
+          "name": "Provider Pinning (Groq)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"groq:llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello Groq!\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/chat/completions",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "chat", "completions"]
+            },
+            "description": "Direct routing to a specific provider adapter using provider:model format."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Embeddings",
+      "item": [
+        {
+          "name": "Generate Vector Embeddings",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"input\": [\n    \"High-performance AI gateway for microservices\",\n    \"Zero cost resilience and fallback routing\"\n  ],\n  \"model\": \"auto:embedding\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/embeddings",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "embeddings"]
+            },
+            "description": "Generates dense vector embeddings for RAG search indexing."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audio",
+      "item": [
+        {
+          "name": "Audio Transcription (Speech-to-Text)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"audio_url\": \"https://example.com/sample.mp3\",\n  \"language\": \"en\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/audio/transcriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "audio", "transcriptions"]
+            },
+            "description": "Transcribes audio files into text using automatic speech recognition."
+          },
+          "response": []
+        },
+        {
+          "name": "Text to Speech Synthesis",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"input\": \"Welcome to Free AI Gateway.\",\n  \"voice\": \"alloy\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/audio/speech",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "audio", "speech"]
+            },
+            "description": "Synthesizes spoken audio from text."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reranking & Search",
+      "item": [
+        {
+          "name": "Rerank Documents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What is an AI gateway?\",\n  \"documents\": [\n    \"An AI gateway routes and manages requests across multiple LLM APIs.\",\n    \"A database stores structured rows of data.\",\n    \"Microservices architecture partitions applications into separate services.\"\n  ],\n  \"top_n\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/rerank",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "rerank"]
+            },
+            "description": "Scores and ranks document relevance against a search query."
+          },
+          "response": []
+        },
+        {
+          "name": "Live Web Search",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Latest breakthroughs in open source AI router architectures\",\n  \"max_results\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/search",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "search"]
+            },
+            "description": "Performs web search via providers like Tavily, Exa, or Google."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Specialized Capabilities",
+      "item": [
+        {
+          "name": "Document Processing & Parsing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"document_url\": \"https://example.com/whitepaper.pdf\",\n  \"extract_images\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/documents/parse",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "documents", "parse"]
+            },
+            "description": "Extracts structured elements and text from documents."
+          },
+          "response": []
+        },
+        {
+          "name": "Content Moderation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"input\": \"This is a clean, helpful, and safe test prompt for content moderation.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/moderate",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "moderate"]
+            },
+            "description": "Evaluates text against safety policies."
+          },
+          "response": []
+        },
+        {
+          "name": "Vision Analysis",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg\",\n  \"prompt\": \"Describe the landscape and colors in this scene.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/vision/analyze",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "vision", "analyze"]
+            },
+            "description": "Analyzes image content with vision-capable multimodal LLMs."
+          },
+          "response": []
+        },
+        {
+          "name": "Translation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Welcome to Free AI Gateway. Connecting open source intelligence.\",\n  \"source_lang\": \"en\",\n  \"target_lang\": \"es\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/translate",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "translate"]
+            },
+            "description": "Translates text across supported language pairs."
+          },
+          "response": []
+        },
+        {
+          "name": "Image Generation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"A minimalist cyberpunk workstation in neon light, digital art\",\n  \"n\": 1,\n  \"size\": \"1024x1024\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/images/generations",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "images", "generations"]
+            },
+            "description": "Generates synthetic images from descriptive prompts."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

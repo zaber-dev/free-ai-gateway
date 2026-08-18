@@ -1,0 +1,25 @@
+meta {
+  name: Generate Embeddings
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/embeddings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "model": "auto:embedding",
+    "input": [
+      "High-performance AI gateway for microservices",
+      "Zero cost resilience and fallback routing"
+    ]
+  }
+}

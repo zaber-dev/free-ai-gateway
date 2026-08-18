@@ -1,0 +1,22 @@
+meta {
+  name: Live Web Search
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v1/search
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "query": "Latest breakthroughs in open source AI router architectures",
+    "max_results": 5
+  }
+}

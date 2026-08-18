@@ -1,0 +1,22 @@
+meta {
+  name: Synthesize Speech
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v1/audio/speech
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "input": "Welcome to Free AI Gateway.",
+    "voice": "alloy"
+  }
+}
