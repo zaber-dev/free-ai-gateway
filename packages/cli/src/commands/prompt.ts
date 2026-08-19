@@ -43,8 +43,11 @@ export async function promptCommand(promptText: string, options: PromptOptions =
 
     const outputText =
       response.data?.choices?.[0]?.message?.content ||
+      response.data?.message?.content ||
+      response.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      response.data?.content?.[0]?.text ||
       response.data?.text ||
-      JSON.stringify(response.data, null, 2);
+      (typeof response.data === "string" ? response.data : JSON.stringify(response.data, null, 2));
 
     console.log(outputText);
     console.log(`\n---\n✨ [Served by: ${response.servedBy.provider} | Model: ${response.servedBy.model}]`);

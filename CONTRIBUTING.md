@@ -11,12 +11,15 @@ This project is organized as an **Enterprise TypeScript Monorepo** managed via n
 ```
 free-ai-gateway/
 ├── packages/
-│   ├── core/       → @free-ai-gateway/core (AI Orchestration Engine & 19 Provider Adapters)
+│   ├── core/       → @free-ai-gateway/core (AI Orchestration Engine & 20 Provider Adapters)
 │   ├── mcp/        → @free-ai-gateway/mcp (Model Context Protocol Server for Agents)
 │   ├── skills/     → @free-ai-gateway/skills (IDE Skills & Multi-Agent Installer)
 │   └── cli/        → @free-ai-gateway/cli (Developer CLI & Terminal AI Assistant)
 ├── apps/
 │   └── gateway/    → @free-ai-gateway/gateway (Fastify HTTP OpenAI-Compatible Proxy)
+├── examples/
+│   ├── nextjs-chat/ → Next.js 14+ Streaming Web App (Vercel AI SDK & SSE)
+│   └── collections/ → Postman & Bruno API Testing Collections
 └── tests/
     └── e2e/        → Cross-package End-to-End Integration Tests
 ```
@@ -81,7 +84,7 @@ export class MyCustomProviderAdapter extends BaseProvider {
   public static readonly providerId = "my_custom_provider";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.MY_CUSTOM_PROVIDER_API_KEY;
+    const apiKey = this.getApiKey("MY_CUSTOM_PROVIDER_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing MY_CUSTOM_PROVIDER_API_KEY", 401);
     }
@@ -110,11 +113,15 @@ export class MyCustomProviderAdapter extends BaseProvider {
 }
 ```
 
-### 2. Export the Class in `packages/core/src/providers/index.ts`
-Add the export so `ProviderLoader` and consumer packages can discover it:
+### 2. Export the Class in `providers/index.ts` and `core/src/index.ts`
+Add the export so `ProviderLoader` and downstream consumer packages can discover it directly:
 
 ```typescript
+// In packages/core/src/providers/index.ts
 export * from "./my-custom-provider";
+
+// In packages/core/src/index.ts
+export * from "./providers/my-custom-provider";
 ```
 
 ### 3. Add Provider Entry to `packages/core/src/config/providers.json`

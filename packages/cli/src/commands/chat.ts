@@ -69,8 +69,11 @@ export async function chatCommand(options: ChatOptions = {}): Promise<void> {
 
       const reply =
         response.data?.choices?.[0]?.message?.content ||
+        response.data?.message?.content ||
+        response.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+        response.data?.content?.[0]?.text ||
         response.data?.text ||
-        JSON.stringify(response.data, null, 2);
+        (typeof response.data === "string" ? response.data : JSON.stringify(response.data, null, 2));
 
       messages.push({ role: "assistant", content: reply });
 

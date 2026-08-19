@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: "If you use Free-AI Gateway in your research or software projects, please cite it as below."
 title: "Free-AI Gateway: Enterprise-grade capability-driven AI routing engine and proxy for free-tier providers"
-abstract: "An open-source, protocol-neutral capability routing engine, Fastify HTTP proxy, Model Context Protocol server, and developer CLI aggregating 19+ free-tier AI providers with sliding-window quota tracking and adaptive circuit breaker resilience."
+abstract: "An open-source, protocol-neutral capability routing engine, Fastify HTTP proxy, Model Context Protocol server, and developer CLI aggregating 20+ free-tier AI providers with sliding-window quota tracking and adaptive circuit breaker resilience."
 authors:
   - family-names: "Zaber"
     given-names: "Md. Mahedi Zaman"
     orcid: ""
-date-released: 2026-08-18
-version: 1.0.0
+date-released: 2026-08-19
+version: 1.1.0
 license: MIT
 repository-code: "https://github.com/zaber-dev/free-ai-gateway"
 url: "https://github.com/zaber-dev/free-ai-gateway"

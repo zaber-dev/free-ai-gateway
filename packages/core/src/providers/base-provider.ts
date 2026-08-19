@@ -122,6 +122,20 @@ export abstract class BaseProvider implements ProviderAdapter {
         rateLimited: false,
       };
     }
+    if (err instanceof Error) {
+      const msg = err.message.toLowerCase();
+      if (
+        err.name === "AbortError" ||
+        msg.includes("timeout") ||
+        msg.includes("fetch failed") ||
+        msg.includes("econnrefused") ||
+        msg.includes("econnreset") ||
+        msg.includes("socket") ||
+        msg.includes("network")
+      ) {
+        return { retryable: true, rateLimited: false };
+      }
+    }
     return { retryable: false, rateLimited: false };
   }
 }

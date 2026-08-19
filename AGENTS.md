@@ -79,7 +79,7 @@ npx tsx --test packages/core/tests/circuit-breaker.test.ts
 When an agent is tasked with adding a new provider adapter:
 1. Create a new provider adapter in `packages/core/src/providers/<provider-id>.ts` extending `BaseProvider`.
 2. Add the provider schema definition to `packages/core/src/config/providers.json` adhering to `providers.schema.json`.
-3. Export the class in `packages/core/src/providers/index.ts`.
+3. Export the class in both `packages/core/src/providers/index.ts` and `packages/core/src/index.ts`.
 4. Run `npm test` to verify automatic registry discovery and execution.
 
 ---

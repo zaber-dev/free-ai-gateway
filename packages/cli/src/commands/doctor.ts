@@ -13,12 +13,21 @@ export function doctorCommand(): void {
 
   for (const adapter of adapters) {
     const config = adapter.config;
-    // Inspect environment variable based on provider id
-    const envVar = `${config.id.toUpperCase()}_API_KEY`;
-    const isConfigured = Boolean(process.env[envVar]);
+    let status = "⚪ Missing Key (Skipped)";
+    let isReady = false;
 
-    const status = isConfigured ? "✅ Ready (Configured)" : "⚪ Missing Key (Skipped)";
-    if (isConfigured) readyCount++;
+    if (config.auth === "none") {
+      status = "✅ Ready (Local)";
+      isReady = true;
+    } else {
+      const keys = (adapter as any).getApiKeys ? (adapter as any).getApiKeys() : [];
+      if (keys.length > 0) {
+        status = `✅ Ready (${keys.length} key${keys.length > 1 ? "s" : ""})`;
+        isReady = true;
+      }
+    }
+
+    if (isReady) readyCount++;
 
     console.log(
       config.name.padEnd(25) +

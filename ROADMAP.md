@@ -24,22 +24,22 @@ This document outlines the product vision, planned milestones, and upcoming capa
 
 ---
 
-### 📍 v1.1.0 — Observability & Advanced Routing (Q3 2026 🚧)
-- [ ] **OpenTelemetry Tracing & Metrics Exporters**: Native OpenTelemetry span propagation across upstream provider requests.
-- [ ] **Prometheus Metrics Endpoint**: `/metrics` endpoint on the Fastify gateway exporting latency histograms, token counters, and error distributions.
-- [ ] **Dynamic Provider Configuration Reloading**: In-memory JSON/YAML file watcher to hot-reload `providers.json` without server restarts.
-- [ ] **Local LLM Provider Integration**:
-  - [ ] Ollama native provider adapter (`http://localhost:11434`).
-  - [ ] LM Studio provider adapter (`http://localhost:1234`).
-  - [ ] vLLM / LocalAI provider adapter.
-- [ ] **Granular Fallback Retry Policies**: Configurable per-capability retry attempts and backoff multipliers.
+### 📍 v1.1.0 — Observability & Local Inference (Completed ✅)
+- [x] **Prometheus Metrics Endpoint**: `/metrics` endpoint on Fastify HTTP gateway exporting provider latency, circuit breaker states, request counters, and active provider gauges.
+- [x] **Local LLM Offline Inference**:
+  - [x] Ollama native provider adapter (`http://localhost:11434`) with automatic parameter mapping and connection error handling.
+- [x] **Multi-Key Pool Rotation**: Seamless round-robin rotation across multiple comma-separated keys per provider (`PROVIDER_API_KEY=k1,k2,k3`) with per-key quota tracking.
+- [x] **Examples & Developer Tooling**: Next.js 14+ AI SDK streaming chat application and comprehensive Postman + Bruno test collections.
+- [x] **CLI Diagnostics Upgrade**: Enhanced `free-ai doctor` and multi-format text rendering in CLI chat & prompt.
 
 ---
 
-### 📍 v1.2.0 — Distributed Infrastructure & State (Q4 2026 📋)
+### 📍 v1.2.0 — Distributed Infrastructure & Extended Local Providers (Q4 2026 📋)
+- [ ] **Extended Local Provider Adapters**:
+  - [ ] LM Studio provider adapter (`http://localhost:1234`).
+  - [ ] vLLM / LocalAI provider adapter.
 - [ ] **Redis / Valkey Distributed Quota Engine**: Optional distributed sliding-window rate limiter for multi-instance gateway clusters.
 - [ ] **Distributed Circuit Breaker State**: Shared Redis-backed circuit breaker state across horizontal gateway replicas.
-- [ ] **API Key Multi-Tenant Pool Routing**: Support for round-robin rotation across multiple API keys for the same provider to multiply throughput.
 - [ ] **Cost / Token Budget Analytics**: Real-time estimated token usage savings vs. commercial OpenAI/Anthropic rates.
 
 ---

@@ -9,6 +9,8 @@ WORKDIR /app
 COPY package*.json tsconfig.base.json ./
 COPY packages/core/package*.json ./packages/core/
 COPY packages/mcp/package*.json ./packages/mcp/
+COPY packages/skills/package*.json ./packages/skills/
+COPY packages/cli/package*.json ./packages/cli/
 COPY apps/gateway/package*.json ./apps/gateway/
 
 RUN npm ci
@@ -35,6 +37,8 @@ ENV HOST=0.0.0.0
 COPY package*.json ./
 COPY packages/core/package*.json ./packages/core/
 COPY packages/mcp/package*.json ./packages/mcp/
+COPY packages/skills/package*.json ./packages/skills/
+COPY packages/cli/package*.json ./packages/cli/
 COPY apps/gateway/package*.json ./apps/gateway/
 
 RUN npm ci --omit=dev && npm cache clean --force
