@@ -32,8 +32,12 @@ npx @free-ai-gateway/cli prompt "Write a quicksort in TypeScript" --capability=c
 # Start an interactive terminal chat session
 npx @free-ai-gateway/cli chat --capability=reasoning
 
-# Check model catalog across all 19 providers
+# Check model catalog across all 20 providers (including local Ollama)
 npx @free-ai-gateway/cli models
+
+# Output models in JSON or Markdown table format
+npx @free-ai-gateway/cli models --format=json
+npx @free-ai-gateway/cli models --format=markdown
 
 # Run system diagnostics & check API key readiness
 npx @free-ai-gateway/cli doctor
@@ -62,14 +66,15 @@ free-ai doctor
 | :--- | :--- | :--- |
 | **`prompt <text>`** | Execute a one-off prompt with capability routing | `free-ai prompt "Summarize this article" --capability=text` |
 | **`chat`** | Interactive terminal chat REPL | `free-ai chat --capability=reasoning` |
-| **`models`** | List all available models, providers, and capabilities | `free-ai models` |
-| **`doctor`** | Check configured API keys and provider readiness | `free-ai doctor` |
+| **`models`** | List all available models, providers, and capabilities | `free-ai models --format=json` |
+| **`doctor`** | Check configured API keys, key pools, and local provider readiness | `free-ai doctor` |
 | **`skills`** | Install agent skills to Antigravity, Cursor, Claude | `free-ai skills install --target=all` |
 
 ### Command Options:
 - `--capability=<cap>`: Specify required capability (`text`, `code`, `reasoning`, `vision`, `tool_calling`, etc.)
-- `--provider=<id>`: Force preferred provider (e.g. `groq`, `google`, `sambanova`, `openrouter`)
-- `--model=<id>`: Force specific model identifier
+- `--provider=<id>`, `-p <id>`: Force preferred provider (e.g. `groq`, `google`, `sambanova`, `ollama`)
+- `--model=<id>`, `-m <id>`: Force specific model identifier
+- `--format=<fmt>`, `-f <fmt>`: Output format for model catalog (`text`, `json`, `markdown`)
 - `--help`, `-h`: Show help manual
 - `--version`, `-v`: Print CLI version
 

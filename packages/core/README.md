@@ -2,7 +2,7 @@
 
 # ⚡ @free-ai-gateway/core
 
-**Protocol-neutral AI capability routing, sliding-window quota tracking, circuit breaker resilience, and 19 free-tier provider adapters in pure TypeScript.**
+**Protocol-neutral AI capability routing, sliding-window quota tracking, circuit breaker resilience, and 20 free-tier & local provider adapters in pure TypeScript.**
 
 [![npm version](https://img.shields.io/npm/v/@free-ai-gateway/core.svg)](https://www.npmjs.com/package/@free-ai-gateway/core)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -30,11 +30,11 @@ npm install @free-ai-gateway/core
 
 - 🎯 **Capability-Based Routing**: Request models based on semantic requirements (e.g., `["text", "tool_calling", "structured_output"]`) instead of hardcoding specific model identifiers.
 - 📐 **Pluggable Strategy Engine**: Implement custom routing strategies via `IRoutingStrategy` or use built-in strategies (`AdaptiveHealthStrategy`, `LowestLatencyStrategy`).
-- 🛡️ **Sliding-Window Quota Tracking**: Proactively enforces Requests-Per-Minute (RPM), Tokens-Per-Minute (TPM), and Requests-Per-Day (RPD) with automatic cooldown backoff.
+- 🛡️ **Sliding-Window Quota Tracking**: Proactively enforces Requests-Per-Minute (RPM), Tokens-Per-Minute (TPM), and Requests-Per-Day (RPD) with automatic cooldown backoff and multi-key pool support.
 - ⚡ **Circuit Breaker**: Detects downstream provider degradation and enters exponential cooldown backoff to prevent cascade latency spikes.
 - 🔌 **Dynamic Provider Autoloader**: Auto-discovers and registers provider adapters extending `BaseProvider`.
 - 📡 **Typed EventBus Telemetry**: Full lifecycle event emissions (`request:start`, `request:success`, `request:fallback`, `provider:rate_limited`, `circuit:opened`).
-- 🌐 **19 Built-in Providers**: Ready-to-use adapters for Google AI Studio, Groq, SambaNova, NVIDIA NIM, Cohere, OpenRouter, Jina, Voyage AI, Exa, Tavily, and more.
+- 🌐 **20 Built-in & Local Providers**: Ready-to-use adapters for Google AI Studio, Groq, SambaNova, NVIDIA NIM, Cohere, OpenRouter, Jina, Voyage AI, Exa, Tavily, Ollama (Local), and more.
 
 ---
 

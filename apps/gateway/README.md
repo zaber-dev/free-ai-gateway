@@ -73,9 +73,13 @@ curl http://localhost:3000/v1/embeddings \
 
 Returns an OpenAI-compliant list of all currently discovered provider models and capability routes.
 
-### 4. Health & System Metrics (`GET /health`)
+### 4. Health Check (`GET /health`)
 
 Returns gateway uptime, active providers, and circuit breaker health statuses.
+
+### 5. Prometheus Metrics (`GET /metrics`)
+
+Exports real-time Prometheus scrape metrics including active provider counts, provider health states, circuit breaker states, request duration gauges, and counter metrics.
 
 ---
 
