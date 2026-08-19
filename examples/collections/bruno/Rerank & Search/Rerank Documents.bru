@@ -1,0 +1,27 @@
+meta {
+  name: Rerank Documents
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/rerank
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "query": "What is an AI gateway?",
+    "documents": [
+      "An AI gateway routes and manages requests across multiple LLM APIs.",
+      "A database stores structured rows of data.",
+      "Microservices architecture partitions applications into separate services."
+    ],
+    "top_n": 2
+  }
+}

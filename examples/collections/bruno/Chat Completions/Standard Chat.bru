@@ -1,0 +1,33 @@
+meta {
+  name: Standard Chat Completion
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/chat/completions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "model": "auto:text",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful AI assistant."
+      },
+      {
+        "role": "user",
+        "content": "Explain what an AI API gateway is in 2 sentences."
+      }
+    ],
+    "temperature": 0.7,
+    "max_tokens": 256
+  }
+}

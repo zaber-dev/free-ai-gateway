@@ -1,0 +1,22 @@
+meta {
+  name: Vision Analysis
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/v1/vision/analyze
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
+    "prompt": "Describe the landscape and colors in this scene."
+  }
+}

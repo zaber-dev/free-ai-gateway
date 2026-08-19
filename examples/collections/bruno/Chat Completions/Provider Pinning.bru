@@ -1,0 +1,27 @@
+meta {
+  name: Provider Pinning
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/v1/chat/completions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "model": "groq:llama-3.3-70b-versatile",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello Groq!"
+      }
+    ]
+  }
+}

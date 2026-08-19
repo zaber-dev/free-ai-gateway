@@ -1,0 +1,32 @@
+meta {
+  name: Stream Chat Completion
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/v1/chat/completions
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: text/event-stream
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "model": "auto:text",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Count from 1 to 5 slowly."
+      }
+    ],
+    "stream": true
+  }
+}

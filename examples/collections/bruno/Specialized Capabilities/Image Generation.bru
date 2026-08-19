@@ -1,0 +1,23 @@
+meta {
+  name: Image Generation
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/v1/images/generations
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "prompt": "A minimalist cyberpunk workstation in neon light, digital art",
+    "n": 1,
+    "size": "1024x1024"
+  }
+}

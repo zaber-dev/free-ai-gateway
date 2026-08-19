@@ -1,0 +1,22 @@
+meta {
+  name: Transcribe Audio
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/audio/transcriptions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "audio_url": "https://example.com/sample.mp3",
+    "language": "en"
+  }
+}
