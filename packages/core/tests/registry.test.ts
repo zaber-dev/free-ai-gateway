@@ -5,7 +5,7 @@ import { Registry } from "../src/providers/registry";
 describe("Registry", () => {
   it("should initialize successfully and load all provider configurations", () => {
     const registry = new Registry();
-    assert.ok(registry.adapters.length >= 19, "Expected at least 19 adapters instantiated");
+    assert.ok(registry.adapters.length >= 20, "Expected at least 20 adapters instantiated");
   });
 
   it("should find matching candidates for 'text' capability", () => {

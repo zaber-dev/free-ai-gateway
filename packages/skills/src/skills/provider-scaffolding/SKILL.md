@@ -21,7 +21,7 @@ export class NewProviderAdapter extends BaseProvider {
   public static readonly providerId = "new_provider";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.NEW_PROVIDER_API_KEY;
+    const apiKey = this.getApiKey("NEW_PROVIDER_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing NEW_PROVIDER_API_KEY", 401);
     }
@@ -74,11 +74,15 @@ export class NewProviderAdapter extends BaseProvider {
 }
 ```
 
-### 3. Export in `packages/core/src/providers/index.ts`
+### 3. Export in `packages/core/src/providers/index.ts` & `packages/core/src/index.ts`
 Export the class so `ProviderLoader` and downstream packages can consume it:
 
 ```typescript
-export * from "./new-provider";
+// in packages/core/src/providers/index.ts
+export { NewProviderAdapter } from "./new-provider";
+
+// in packages/core/src/index.ts
+export { NewProviderAdapter } from "./providers";
 ```
 
 ### 4. Verify with Tests

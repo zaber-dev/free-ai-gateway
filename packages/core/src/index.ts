@@ -87,6 +87,7 @@ export {
   UnstructuredAdapter,
   ExaAdapter,
   TavilyAdapter,
+  OllamaAdapter,
 } from "./providers";
 
 // Routing Engine & Strategies

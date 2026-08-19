@@ -4,7 +4,7 @@
 
 # ⚡ Free-AI Gateway
 
-**Enterprise-grade capability-routed AI Gateway monorepo aggregating free-tier AI APIs into reusable libraries, Model Context Protocol (MCP) servers, and OpenAI-compatible HTTP proxies.**
+**Enterprise-grade capability-routed AI Gateway monorepo aggregating free-tier and local AI APIs into reusable libraries, Model Context Protocol (MCP) servers, and OpenAI-compatible HTTP proxies.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
@@ -22,42 +22,46 @@
 
 ## 📖 Architecture & Monorepo Overview
 
-**`free-ai-gateway`** is organized as an enterprise monorepo separating **pure AI orchestration infrastructure** from **protocol-specific delivery mechanisms** (HTTP Fastify Proxy & MCP Server):
+**`free-ai-gateway`** is organized as an enterprise monorepo separating **pure AI orchestration infrastructure** from **protocol-specific delivery mechanisms** (HTTP Fastify Proxy, MCP Server, CLI, & Web Examples):
 
 ```mermaid
 flowchart TD
     subgraph CoreLayer ["@free-ai-gateway/core (Standalone npm package)"]
         Router["CapabilityRouter & Strategy Engine"]
-        Providers["19 Provider Adapters & Dynamic Registry"]
+        Providers["20 Provider Adapters & Dynamic Registry"]
         Resilience["QuotaTracker & CircuitBreaker"]
         Observability["EventBus & MetricsTracker"]
         Transport["HttpClient with Exponential Backoff"]
     end
 
-    subgraph Consumers ["Consumer Applications"]
-        GatewayApp["apps/gateway (@free-ai-gateway/gateway)<br/>Fastify HTTP OpenAI Proxy"]
+    subgraph Consumers ["Consumer Applications & Examples"]
+        GatewayApp["apps/gateway (@free-ai-gateway/gateway)<br/>Fastify HTTP OpenAI Proxy & SSE Streamer"]
         McpApp["packages/mcp (@free-ai-gateway/mcp)<br/>Model Context Protocol Server"]
         SkillsPkg["packages/skills (@free-ai-gateway/skills)<br/>Agentic IDE Skills & CLI"]
         CliApp["packages/cli (@free-ai-gateway/cli)<br/>Terminal Assistant & Diagnostics"]
-        ClientApp["Custom Node.js / TypeScript App<br/>Direct Library Import"]
+        NextApp["examples/nextjs-chat<br/>Next.js 14+ Fullstack Streaming UI"]
+        Collections["examples/collections<br/>Postman & Bruno API Test Suites"]
     end
 
     GatewayApp -->|consumes| CoreLayer
     McpApp -->|consumes| CoreLayer
     SkillsPkg -->|integrates with| CoreLayer
     CliApp -->|consumes| CoreLayer
-    ClientApp -->|consumes| CoreLayer
+    NextApp -->|proxies to| GatewayApp
+    Collections -->|tests| GatewayApp
 ```
 
 ### Monorepo Workspaces Matrix
 
 | Package / App | Location | Purpose | Dependencies |
 | :--- | :--- | :--- | :--- |
-| **`@free-ai-gateway/core`** | `packages/core` | Protocol-neutral capability router, resilience engine, and 19 provider adapters. | `ajv`, `dotenv` (Zero HTTP server) |
+| **`@free-ai-gateway/core`** | `packages/core` | Protocol-neutral capability router, resilience engine, and 20 provider adapters. | `ajv`, `dotenv` (Zero HTTP server) |
 | **`@free-ai-gateway/mcp`** | `packages/mcp` | Model Context Protocol server exposing capability tools to AI agents (Claude Desktop, Cursor). | `@free-ai-gateway/core` |
 | **`@free-ai-gateway/skills`** | `packages/skills` | Agentic IDE skills (`SKILL.md`) and installer CLI for Antigravity, Claude, Cursor, and Copilot. | Standalone CLI & API |
 | **`@free-ai-gateway/cli`** | `packages/cli` | Terminal AI assistant, interactive chat REPL, model catalog, and diagnostics tool. | `@free-ai-gateway/core`, `@free-ai-gateway/skills` |
-| **`@free-ai-gateway/gateway`** | `apps/gateway` | High-throughput Fastify HTTP proxy serving OpenAI-compatible endpoints with auto-discovery. | `@free-ai-gateway/core`, `fastify` |
+| **`@free-ai-gateway/gateway`** | `apps/gateway` | High-throughput Fastify HTTP proxy serving OpenAI-compatible endpoints with auto-discovery and SSE. | `@free-ai-gateway/core`, `fastify` |
+| **`examples/nextjs-chat`** | `examples/nextjs-chat` | Fullstack Next.js 14+ App Router demo with Vercel AI SDK & zero-dep native SSE streams. | `ai`, `openai`, `next`, `react` |
+| **`examples/collections`** | `examples/collections` | Complete Postman v2.1 and Bruno collections covering all 19 API endpoints. | Standard JSON / `.bru` suites |
 
 ---
 
@@ -68,18 +72,20 @@ flowchart TD
 - 🔄 **Autonomous Failover**: Transparently cycles through ranked candidate providers until success upon encountering upstream `429` (Rate Limit) or `5xx` errors.
 - 🛡️ **Circuit Breaker**: Detects failing providers and enters exponential cooldown backoff to prevent cascade failures.
 - ⏱️ **Sliding-Window Quota Tracking**: In-memory accounting of RPM, TPM, and RPD with proactive limit protection.
+- 🔑 **Multi-Key Pool Rotation**: Configure comma-separated API keys (`PROVIDER_KEY=k1,k2,k3`) with round-robin rotation and per-key rate-limit isolation.
 - 🔌 **Dynamic Provider Autoloader**: Add new providers by dropping a class extending `BaseProvider` into `packages/core/src/providers/`.
-- 📡 **Typed Event Bus**: Lifecycle events (`request:start`, `request:success`, `request:fallback`, `provider:rate_limited`) for OpenTelemetry and Prometheus observability.
+- 📡 **Typed Event Bus & Observability**: Lifecycle events for OpenTelemetry and zero-overhead Prometheus `/metrics` endpoint.
 - 🤖 **Model Context Protocol (MCP) Ready**: Use directly in Claude Desktop, Cursor, or agent workflows.
 
 ---
 
-## 🧩 Supported Providers Matrix (19 Adapters)
+## 🧩 Supported Providers Matrix (20 Adapters)
 
 | Provider | Modalities / Capabilities | Authentication | Limit Scope |
 | :--- | :--- | :--- | :--- |
 | **Google AI Studio** | `text`, `tool_calling`, `vision`, `structured_output`, `embedding`, `tts` | `GOOGLE_API_KEY` | Per Model |
 | **Groq** | `text`, `tool_calling`, `structured_output`, `reasoning`, `speech_to_text` | `GROQ_API_KEY` | Account |
+| **Ollama (Local)** | `text`, `code`, `reasoning` | None (Local Daemon) | Local Node |
 | **SambaNova Cloud** | `text`, `tool_calling`, `reasoning`, `vision` | `SAMBANOVA_API_KEY` | Account |
 | **NVIDIA NIM** | `text`, `tool_calling`, `reasoning`, `vision`, `embedding`, `rerank`, `moderation` | `NVIDIA_API_KEY` | Account |
 | **Cohere** | `text`, `tool_calling`, `structured_output`, `reasoning`, `embedding`, `rerank` | `COHERE_API_KEY` | Account |
@@ -135,7 +141,7 @@ COHERE_API_KEY=...
 # Compile all workspace packages
 npm run build
 
-# Run all 31 automated tests across all packages
+# Run all 55 automated tests across all packages
 npm test
 
 # Start the Fastify HTTP Gateway (Dev mode)
@@ -287,8 +293,8 @@ npx @free-ai-gateway/cli "Explain MapReduce in simple terms"
 # Interactive chat REPL in terminal
 npx @free-ai-gateway/cli chat --capability=reasoning
 
-# Check model catalog across all 19 providers
-npx @free-ai-gateway/cli models
+# Check model catalog with formatting & capability filter
+npx @free-ai-gateway/cli models --format=markdown --capability=code
 
 # Run system diagnostics
 npx @free-ai-gateway/cli doctor
@@ -308,13 +314,13 @@ free-ai-gateway/
 │   │   │   ├── config/              # providers.json, schema, config sources
 │   │   │   ├── errors/              # ProviderError, NoProviderAvailableError
 │   │   │   ├── observability/       # EventBus, MetricsTracker
-│   │   │   ├── providers/           # 19 Provider Adapters + Registry + Loader
+│   │   │   ├── providers/           # 20 Provider Adapters + Registry + Loader
 │   │   │   ├── resilience/          # QuotaTracker, CircuitBreaker
 │   │   │   ├── router/              # CapabilityRouter & Strategy Pattern
 │   │   │   ├── transport/           # HttpClient with exponential backoff
 │   │   │   ├── types/               # Unified contracts & response schemas
 │   │   │   └── index.ts             # Public Core API
-│   │   ├── tests/                   # 20 Core unit tests
+│   │   ├── tests/                   # 28 Core unit tests
 │   │   └── package.json
 │   │
 │   ├── mcp/                         # @free-ai-gateway/mcp
@@ -344,22 +350,26 @@ free-ai-gateway/
 │       │   ├── cli.ts               # Argument parsing & dispatcher
 │       │   ├── bin.ts               # CLI executable (free-ai, freeai)
 │       │   └── index.ts
-│       ├── tests/                   # 4 CLI tests
+│       ├── tests/                   # 8 CLI tests
 │       └── package.json
 │
 ├── apps/
 │   └── gateway/                     # @free-ai-gateway/gateway (HTTP App)
 │       ├── AGENTS.md                # Agentic guidelines for @free-ai-gateway/gateway
 │       ├── src/
-│       │   ├── adapters/            # OpenAI chat response normalizer
+│       │   ├── adapters/            # OpenAI chat response normalizer & SSE chunker
 │       │   ├── api/
 │       │   │   ├── routes/          # Fastify route modules & RouteLoader
 │       │   │   └── server.ts        # Server factory, timing hooks, 404 handler
 │       │   ├── jobs/                # Background JobScheduler & reverify worker
 │       │   └── index.ts
-│       ├── tests/                   # 5 Gateway HTTP tests
+│       ├── tests/                   # 7 Gateway HTTP tests
 │       ├── Dockerfile               # Monorepo container builder
 │       └── package.json
+│
+├── examples/
+│   ├── nextjs-chat/                 # Next.js 14+ App Router & Vercel AI SDK example
+│   └── collections/                 # Ready-to-import Postman & Bruno API suites
 │
 ├── tests/
 │   └── e2e/                         # 5 Cross-package E2E integration tests
@@ -373,8 +383,6 @@ free-ai-gateway/
 ├── tsconfig.base.json               # Shared TypeScript compiler settings
 └── README.md
 ```
-
----
 
 ---
 
@@ -400,4 +408,3 @@ Created and maintained with ❤️ by **[Md. Mahedi Zaman Zaber](https://github.
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
-

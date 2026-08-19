@@ -13,7 +13,7 @@ describe("Gateway HTTP Server Integration", () => {
     assert.equal(response.statusCode, 200);
     const body = JSON.parse(response.body);
     assert.equal(body.status, "healthy");
-    assert.ok(body.activeProviders >= 19, "Expected at least 19 active providers");
+    assert.ok(body.activeProviders >= 20, "Expected at least 20 active providers");
     assert.ok(typeof body.uptime === "number");
     assert.ok(response.headers["x-response-time"]);
   });

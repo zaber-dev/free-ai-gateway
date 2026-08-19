@@ -32,7 +32,7 @@ Free-AI Gateway separates **domain orchestration logic** from **transport protoc
     │                                                                                          │
     │  ┌─────────────────────────┐  ┌─────────────────────────┐  ┌─────────────────────────┐  │
     │  │    Capability Router    │  │    Resilience Engine    │  │    Provider Registry    │  │
-    │  │  - Routing Strategies   │  │  - Sliding Quota (RPM)  │  │  - 19 BaseProvider     │  │
+    │  │  - Routing Strategies   │  │  - Sliding Quota (RPM)  │  │  - 20 BaseProvider     │  │
     │  │  - Auto-Failover Logic  │  │  - Circuit Breakers     │  │    Adapters             │  │
     │  │  - Health-Weight Rank   │  │  - Adaptive Latency     │  │  - JSON Schema Validator│  │
     │  └─────────────────────────┘  └─────────────────────────┘  └─────────────────────────┘  │
@@ -43,11 +43,11 @@ Free-AI Gateway separates **domain orchestration logic** from **transport protoc
     │  │  - Metrics Tracker      │  │  - Exponential Backoff  │  │  - UnifiedResponse      │  │
     │  └─────────────────────────┘  └─────────────────────────┘  └─────────────────────────┘  │
     └────────────────────────────────────────────┬─────────────────────────────────────────────┘
-                                                 │ Upstream HTTPS
+                                                 │ Upstream HTTPS & Local IPC
                                                  ▼
     ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-    │                              19+ Free-Tier Cloud Providers                               │
-    │  Groq • Google AI Studio • OpenRouter • SambaNova • NVIDIA NIM • Cohere • Jina • Tavily  │
+    │                       20+ Free-Tier Cloud & Local Providers                              │
+    │  Groq • Google AI Studio • Ollama • OpenRouter • SambaNova • NVIDIA NIM • Cohere • Jina  │
     └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 

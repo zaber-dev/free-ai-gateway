@@ -20,9 +20,12 @@ Instead of hardcoding provider model names (like `llama-3.3-70b` or `gemini-2.5-
 - `rerank`
 - `code`
 - `speech_to_text`
+- `text_to_speech`
 - `translation`
 - `document_processing`
 - `web_search`
+- `image_gen`
+- `moderation`
 
 Example Capability Model Request:
 ```json

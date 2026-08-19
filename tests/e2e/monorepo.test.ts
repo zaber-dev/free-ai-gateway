@@ -12,7 +12,7 @@ describe("Monorepo E2E Cross-Package Integration", () => {
     const router = new CapabilityRouter(registry, quota, breaker);
 
     assert.ok(router instanceof CapabilityRouter);
-    assert.ok(registry.adapters.length >= 19);
+    assert.ok(registry.adapters.length >= 20);
   });
 
   it("Gateway HTTP application starts and responds to /health", async () => {

@@ -6,7 +6,7 @@ import { BaseProvider } from "../src/providers/base-provider";
 describe("ProviderLoader", () => {
   it("should auto-discover provider adapters from directory", () => {
     const providers = ProviderLoader.getAll();
-    assert.ok(providers.size >= 19, "Expected at least 19 discovered providers");
+    assert.ok(providers.size >= 20, "Expected at least 20 discovered providers");
     assert.ok(providers.has("groq"));
     assert.ok(providers.has("google_ai_studio"));
     assert.ok(providers.has("sambanova"));
