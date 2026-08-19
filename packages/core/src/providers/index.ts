@@ -24,6 +24,7 @@ export { MyMemoryAdapter } from "./mymemory";
 export { UnstructuredAdapter } from "./unstructured";
 export { ExaAdapter } from "./exa";
 export { TavilyAdapter } from "./tavily";
+export { OllamaAdapter } from "./ollama";
 
 // Trigger automatic discovery of all providers
 ProviderLoader.autoDiscover();
