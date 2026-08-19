@@ -6,7 +6,7 @@ export class OvhCloudAdapter extends BaseProvider {
   public static readonly providerId = "ovhcloud_ai_endpoints";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.OVHCLOUD_API_KEY;
+    const apiKey = this.getApiKey("OVHCLOUD_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing OVHCLOUD_API_KEY", 401);
     }

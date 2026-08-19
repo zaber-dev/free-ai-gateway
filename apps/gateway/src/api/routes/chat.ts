@@ -5,7 +5,7 @@ import {
   parseCapabilities,
 } from "@free-ai-gateway/core";
 import { RouteDependencies } from "./route-factory";
-import { toOpenAIChatResponse } from "../../adapters/openai";
+import { toOpenAIChatResponse, createOpenAIChatStreamChunks } from "../../adapters/openai";
 
 export default async function chatRoute(fastify: FastifyInstance, opts: RouteDependencies) {
   const router = new CapabilityRouter(
@@ -42,14 +42,18 @@ export default async function chatRoute(fastify: FastifyInstance, opts: RouteDep
 
     const capabilities = parseCapabilities(model);
 
-    // Check for provider pinning: e.g. "groq:llama-3.3-70b-versatile" or "groq"
+    // Check for provider pinning: e.g. "groq:llama-3.3-70b-versatile" or "groq/llama-3.3-70b-versatile"
     let preferredProvider: string | undefined;
     let preferredModel: string | undefined;
 
     if (model.includes(":") && !model.startsWith("auto:")) {
       const parts = model.split(":");
-      preferredProvider = parts[0];
-      preferredModel = parts[1];
+      preferredProvider = parts[0].replace(/-/g, "_");
+      preferredModel = parts.slice(1).join(":");
+    } else if (model.includes("/") && !model.startsWith("auto/")) {
+      const parts = model.split("/");
+      preferredProvider = parts[0].replace(/-/g, "_");
+      preferredModel = parts.slice(1).join("/");
     } else if (!model.startsWith("auto:")) {
       preferredModel = model;
     }
@@ -61,6 +65,23 @@ export default async function chatRoute(fastify: FastifyInstance, opts: RouteDep
         preferredProvider,
         preferredModel,
       });
+
+      if (body.stream === true) {
+        reply.raw.writeHead(200, {
+          "Content-Type": "text/event-stream; charset=utf-8",
+          "Cache-Control": "no-cache, no-transform",
+          "Connection": "keep-alive",
+          "Access-Control-Allow-Origin": "*",
+        });
+
+        const chunks = createOpenAIChatStreamChunks(response);
+        for (const chunk of chunks) {
+          reply.raw.write(`data: ${JSON.stringify(chunk)}\n\n`);
+        }
+        reply.raw.write("data: [DONE]\n\n");
+        reply.raw.end();
+        return;
+      }
 
       return reply.send(toOpenAIChatResponse(response));
     } catch (err: any) {

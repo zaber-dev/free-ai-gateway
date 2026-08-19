@@ -6,7 +6,7 @@ export class UnstructuredAdapter extends BaseProvider {
   public static readonly providerId = "unstructured_io";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.UNSTRUCTURED_API_KEY;
+    const apiKey = this.getApiKey("UNSTRUCTURED_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing UNSTRUCTURED_API_KEY", 401);
     }

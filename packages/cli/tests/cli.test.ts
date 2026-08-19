@@ -108,6 +108,25 @@ describe("Free-AI Gateway CLI", () => {
     }
   });
 
+  it("should filter models by capability and provider using CLI flags", async () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (...args: any[]) => {
+      output += args.join(" ") + "\n";
+    };
+
+    try {
+      await runCli(["models", "-f", "json", "--capability=text", "-p", "groq"]);
+      const parsed = JSON.parse(output.trim());
+      assert.ok(Array.isArray(parsed));
+      assert.ok(parsed.length > 0);
+      assert.ok(parsed.every((m: any) => m.provider === "groq"));
+      assert.ok(parsed.every((m: any) => m.capabilities.includes("text")));
+    } finally {
+      console.log = originalLog;
+    }
+  });
+
   it("should show version when requested with --version", async () => {
     let output = "";
     const originalLog = console.log;

@@ -6,7 +6,7 @@ export class ExaAdapter extends BaseProvider {
   public static readonly providerId = "exa_ai";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.EXA_API_KEY;
+    const apiKey = this.getApiKey("EXA_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing EXA_API_KEY", 401);
     }

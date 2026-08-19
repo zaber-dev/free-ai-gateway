@@ -6,7 +6,7 @@ export class OpenCodeZenAdapter extends BaseProvider {
   public static readonly providerId = "opencode_zen";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.OPENCODE_API_KEY;
+    const apiKey = this.getApiKey("OPENCODE_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing OPENCODE_API_KEY", 401);
     }

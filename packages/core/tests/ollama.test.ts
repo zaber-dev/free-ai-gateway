@@ -94,4 +94,50 @@ describe("OllamaAdapter", () => {
     assert.equal(response.servedBy.model, "llama3.2");
     assert.equal(response.data.message.content, "Hello from Ollama local model!");
   });
+
+  it("should map generation parameters (temperature, max_tokens, prompt) into Ollama options", async () => {
+    let capturedPayload: any = null;
+
+    const mockHttp: any = {
+      post: async (_endpoint: string, payload: any) => {
+        capturedPayload = payload;
+        return {
+          status: 200,
+          data: {
+            model: "llama3.2",
+            message: { role: "assistant", content: "OK" },
+          },
+        };
+      },
+    };
+
+    const adapter = new OllamaAdapter(ollamaConfig, mockHttp);
+    await adapter.invoke(
+      {
+        capabilities: ["text"],
+        payload: {
+          prompt: "Translate code",
+          temperature: 0.7,
+          top_p: 0.9,
+          max_tokens: 500,
+          stop: ["\n\n"],
+        },
+      },
+      ollamaConfig.models[0]
+    );
+
+    assert.equal(capturedPayload.options.temperature, 0.7);
+    assert.equal(capturedPayload.options.top_p, 0.9);
+    assert.equal(capturedPayload.options.num_predict, 500);
+    assert.deepEqual(capturedPayload.options.stop, ["\n\n"]);
+    assert.deepEqual(capturedPayload.messages, [{ role: "user", content: "Translate code" }]);
+  });
+
+  it("should translate ECONNREFUSED into retryable error with cooldown", () => {
+    const adapter = new OllamaAdapter(ollamaConfig);
+    const translated = adapter.translateError(new Error("connect ECONNREFUSED 127.0.0.1:11434"));
+    assert.equal(translated.retryable, true);
+    assert.equal(translated.rateLimited, false);
+    assert.equal(translated.retryAfterMs, 3000);
+  });
 });

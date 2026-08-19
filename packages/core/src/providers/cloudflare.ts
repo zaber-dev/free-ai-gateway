@@ -6,7 +6,7 @@ export class CloudflareWorkersAIAdapter extends BaseProvider {
   public static readonly providerId = "cloudflare_workers_ai";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+    const apiToken = this.getApiKey("CLOUDFLARE_API_TOKEN");
     const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
     if (!apiToken || !accountId) {
       throw new ProviderError("Missing CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID", 401);

@@ -6,7 +6,7 @@ export class BazaarlinkAdapter extends BaseProvider {
   public static readonly providerId = "bazaarlink_ai";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.BAZAARLINK_API_KEY;
+    const apiKey = this.getApiKey("BAZAARLINK_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing BAZAARLINK_API_KEY", 401);
     }

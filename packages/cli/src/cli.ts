@@ -59,8 +59,18 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<vo
       const arg = rest[i];
       if (arg.startsWith("--format=")) {
         modelsOpts.format = arg.replace("--format=", "");
-      } else if (arg === "--format" && rest[i + 1]) {
+      } else if ((arg === "--format" || arg === "-f") && rest[i + 1]) {
         modelsOpts.format = rest[i + 1];
+        i++;
+      } else if (arg.startsWith("--capability=")) {
+        modelsOpts.capability = arg.replace("--capability=", "");
+      } else if ((arg === "--capability" || arg === "-c") && rest[i + 1]) {
+        modelsOpts.capability = rest[i + 1];
+        i++;
+      } else if (arg.startsWith("--provider=")) {
+        modelsOpts.provider = arg.replace("--provider=", "");
+      } else if ((arg === "--provider" || arg === "-p") && rest[i + 1]) {
+        modelsOpts.provider = rest[i + 1];
         i++;
       }
     }

@@ -6,7 +6,7 @@ export class TavilyAdapter extends BaseProvider {
   public static readonly providerId = "tavily";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.TAVILY_API_KEY;
+    const apiKey = this.getApiKey("TAVILY_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing TAVILY_API_KEY", 401);
     }

@@ -6,7 +6,7 @@ export class HuggingFaceAdapter extends BaseProvider {
   public static readonly providerId = "huggingface";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.HUGGINGFACE_API_KEY;
+    const apiKey = this.getApiKey("HUGGINGFACE_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing HUGGINGFACE_API_KEY", 401);
     }

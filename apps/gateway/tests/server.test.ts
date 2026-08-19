@@ -89,6 +89,33 @@ describe("Gateway HTTP Server Integration", () => {
     assert.equal(body.error.type, "invalid_request_error");
   });
 
+  it("toOpenAIChatResponse should normalize Ollama string content and Gemini parts", () => {
+    const { toOpenAIChatResponse } = require("../src/adapters/openai");
+
+    // Test Ollama format
+    const ollamaResp = {
+      servedBy: { provider: "ollama", model: "llama3.2" },
+      data: {
+        model: "llama3.2",
+        message: { role: "assistant", content: "Hello from Ollama!" },
+        done: true,
+      },
+    };
+    const normalizedOllama = toOpenAIChatResponse(ollamaResp);
+    assert.equal(normalizedOllama.choices[0].message.content, "Hello from Ollama!");
+    assert.equal(normalizedOllama.choices[0].message.role, "assistant");
+
+    // Test Gemini format
+    const geminiResp = {
+      servedBy: { provider: "google_ai_studio", model: "gemini-2.0-flash" },
+      data: {
+        candidates: [{ content: { parts: [{ text: "Hello from Gemini!" }] } }],
+      },
+    };
+    const normalizedGemini = toOpenAIChatResponse(geminiResp);
+    assert.equal(normalizedGemini.choices[0].message.content, "Hello from Gemini!");
+  });
+
   it("GET /unknown-route should return OpenAI-formatted 404", async () => {
     const { server } = createServer();
     const response = await server.inject({

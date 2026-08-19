@@ -6,7 +6,7 @@ export class GoogleCloudAdapter extends BaseProvider {
   public static readonly providerId = "google_cloud";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.GCP_API_KEY || process.env.GOOGLE_API_KEY;
+    const apiKey = this.getApiKey("GCP_API_KEY") || this.getApiKey("GOOGLE_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing GCP_API_KEY or GOOGLE_API_KEY", 401);
     }
