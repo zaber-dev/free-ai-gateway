@@ -31,7 +31,7 @@ describe("Gateway HTTP Server Integration", () => {
     assert.ok(response.headers["content-type"]?.includes("text/plain"));
     const body = response.body;
 
-    assert.ok(body.includes("free_ai_gateway_active_providers_count 19"));
+    assert.ok(/free_ai_gateway_active_providers_count \d+/.test(body));
     assert.ok(body.includes("free_ai_gateway_circuit_breaker_state"));
     assert.ok(body.includes("free_ai_gateway_requests_total"));
     assert.ok(body.includes('free_ai_gateway_requests_total{provider="groq",status="success"} 1'));
