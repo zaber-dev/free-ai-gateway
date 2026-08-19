@@ -21,7 +21,7 @@ describe("Free-AI Gateway CLI", () => {
     }
   });
 
-  it("should list discovered models", async () => {
+  it("should list discovered models in default text format", async () => {
     let output = "";
     const originalLog = console.log;
     console.log = (...args: any[]) => {
@@ -32,6 +32,60 @@ describe("Free-AI Gateway CLI", () => {
       await runCli(["models"]);
       assert.ok(output.includes("Discovered Models & Capabilities"));
       assert.ok(output.includes("Provider ID"));
+      assert.ok(output.includes("groq"));
+    } finally {
+      console.log = originalLog;
+    }
+  });
+
+  it("should output models in valid JSON format with --format=json", async () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (...args: any[]) => {
+      output += args.join(" ") + "\n";
+    };
+
+    try {
+      await runCli(["models", "--format=json"]);
+      const parsed = JSON.parse(output.trim());
+      assert.ok(Array.isArray(parsed));
+      assert.ok(parsed.length > 0);
+      assert.ok(parsed[0].provider);
+      assert.ok(parsed[0].model);
+      assert.ok(Array.isArray(parsed[0].capabilities));
+    } finally {
+      console.log = originalLog;
+    }
+  });
+
+  it("should output models in valid JSON format with --format json", async () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (...args: any[]) => {
+      output += args.join(" ") + "\n";
+    };
+
+    try {
+      await runCli(["models", "--format", "json"]);
+      const parsed = JSON.parse(output.trim());
+      assert.ok(Array.isArray(parsed));
+      assert.ok(parsed.length > 0);
+    } finally {
+      console.log = originalLog;
+    }
+  });
+
+  it("should output models in Markdown table format with --format=markdown", async () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (...args: any[]) => {
+      output += args.join(" ") + "\n";
+    };
+
+    try {
+      await runCli(["models", "--format=markdown"]);
+      assert.ok(output.includes("| Provider ID | Model ID | Capabilities |"));
+      assert.ok(output.includes("| :--- | :--- | :--- |"));
       assert.ok(output.includes("groq"));
     } finally {
       console.log = originalLog;
