@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-08-19
+
+### 🚀 Highlights & New Features
+- **Local Inference with Ollama Adapter (`@free-ai-gateway/core`)**: Added `OllamaAdapter` supporting local models (`llama3.2`, `deepseek-r1:7b`, `qwen2.5-coder`, `mistral`) with dynamic `OLLAMA_HOST` configuration, automatic parameter mapping (`temperature`, `top_p`, `seed`, `max_tokens` ➔ `num_predict`, `stop`), and connection failure translation.
+- **Server-Sent Events (SSE) Streaming (`@free-ai-gateway/gateway`)**: Implemented full OpenAI-compatible SSE chunk streaming (`chat.completion.chunk`) and `data: [DONE]` on `POST /v1/chat/completions` when `stream: true`.
+- **Multi-Key Round-Robin Rotation & Rate Limit Isolation (`@free-ai-gateway/core`)**: Added multi-key pool support (`KEY=key1,key2,key3`) across all 20 provider adapters with per-key sliding-window quota isolation in `QuotaTracker`.
+- **Prometheus Observability (`@free-ai-gateway/gateway`)**: Added zero-overhead `/metrics` endpoint exposing active provider counts, circuit breaker states, request counters, and latency gauges.
+- **Enhanced CLI Models Command (`@free-ai-gateway/cli`)**: Added `--format` (`json`, `markdown`, `table`), `--capability` (`-c`), and `--provider` (`-p`) filtering to `free-ai models`.
+- **Next.js 14+ App Router & Vercel AI SDK Example (`examples/nextjs-chat`)**: Fullstack reference implementation featuring dual route handlers (Vercel AI SDK & native fetch SSE stream) and multi-provider capability picker.
+- **API Test Collections (`examples/collections`)**: Complete Postman v2.1 and Bruno collections covering all 15 gateway endpoints.
+
+---
+
 ## [1.0.0] - 2026-08-17
 
 ### 🏛️ Architecture & Monorepo Restructuring

@@ -48,7 +48,7 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<vo
   }
 
   if (command === "--version" || command === "-v" || command === "version") {
-    console.log("free-ai-gateway/cli v1.0.0");
+    console.log("free-ai-gateway/cli v1.1.0");
     return;
   }
 

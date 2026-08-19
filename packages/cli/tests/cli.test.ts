@@ -136,7 +136,7 @@ describe("Free-AI Gateway CLI", () => {
 
     try {
       await runCli(["--version"]);
-      assert.ok(output.includes("free-ai-gateway/cli v1.0.0"));
+      assert.ok(output.includes("free-ai-gateway/cli v1.1.0"));
     } finally {
       console.log = originalLog;
     }

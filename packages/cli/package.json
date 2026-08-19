@@ -1,6 +1,6 @@
 {
   "name": "@free-ai-gateway/cli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Developer CLI tool for Free-AI Gateway: interactive terminal AI, provider diagnostics, model querying, and gateway management.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

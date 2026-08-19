@@ -1,6 +1,6 @@
 {
   "name": "@free-ai-gateway/skills",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Agentic IDE skills and installer CLI for Antigravity, Claude, Cursor, and Copilot.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

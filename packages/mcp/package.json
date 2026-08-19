@@ -1,6 +1,6 @@
 {
   "name": "@free-ai-gateway/mcp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Model Context Protocol (MCP) server providing capability-routed AI tools and resources for agents.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
