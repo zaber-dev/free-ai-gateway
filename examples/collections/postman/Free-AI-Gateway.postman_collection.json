@@ -36,6 +36,20 @@
           "response": []
         },
         {
+          "name": "Prometheus Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["metrics"]
+            },
+            "description": "Prometheus-formatted runtime metrics, provider health states, and latencies."
+          },
+          "response": []
+        },
+        {
           "name": "Admin Providers & Metrics",
           "request": {
             "method": "GET",
@@ -184,14 +198,42 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"model\": \"groq:llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello Groq!\"\n    }\n  ]\n}"
+              "raw": "{\n  \"model\": \"groq/llama-3.3-70b-versatile\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Hello Groq!\"\n    }\n  ]\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/v1/chat/completions",
               "host": ["{{baseUrl}}"],
               "path": ["v1", "chat", "completions"]
             },
-            "description": "Direct routing to a specific provider adapter using provider:model format."
+            "description": "Direct routing to a specific provider adapter using provider/model format."
+          },
+          "response": []
+        },
+        {
+          "name": "Local Inference (Ollama)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"ollama/llama3.2\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Explain zero-latency local LLM routing.\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/chat/completions",
+              "host": ["{{baseUrl}}"],
+              "path": ["v1", "chat", "completions"]
+            },
+            "description": "Offline local model inference routed through local Ollama instance."
           },
           "response": []
         }

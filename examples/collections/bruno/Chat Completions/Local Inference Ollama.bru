@@ -1,0 +1,27 @@
+meta {
+  name: Local Inference (Ollama)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/v1/chat/completions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+body:json {
+  {
+    "model": "ollama/llama3.2",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain zero-latency local LLM routing."
+      }
+    ]
+  }
+}

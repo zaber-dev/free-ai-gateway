@@ -5,7 +5,8 @@
   "description": "Enterprise-grade capability-routed AI gateway aggregating free-tier AI APIs into reusable packages, MCP servers, and OpenAI-compatible HTTP proxies.",
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "examples/*"
   ],
   "scripts": {
     "build": "npm run build --workspace=@free-ai-gateway/core && npm run build --workspace=@free-ai-gateway/skills && npm run build --workspace=@free-ai-gateway/mcp && npm run build --workspace=@free-ai-gateway/cli && npm run build --workspace=@free-ai-gateway/gateway",

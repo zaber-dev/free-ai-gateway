@@ -30,7 +30,7 @@ Modern generative AI development often suffers from two major pain points:
 1. **High or unpredictable API costs** during prototyping and automated agentic testing.
 2. **Brittle provider lock-in**, where code is tied directly to OpenAI, Anthropic, or Gemini SDKs.
 
-Free-AI Gateway solves this by aggregating **19+ free-tier AI providers** (Groq, Google AI Studio, OpenRouter, SambaNova, NVIDIA NIM, Cohere, HuggingFace, Cloudflare Workers AI, Jina, Tavily, Exa, and more) into a single, unified, resilient routing layer.
+Free-AI Gateway solves this by aggregating **20+ free-tier and local AI providers** (Groq, Google AI Studio, Ollama, OpenRouter, SambaNova, NVIDIA NIM, Cohere, HuggingFace, Cloudflare Workers AI, Jina, Tavily, Exa, and more) into a single, unified, resilient routing layer.
 
 ### The 4 Core Principles
 1. **Capability-First, Not Model-First**: Applications and AI agents request *what they need* (e.g., `["text", "reasoning"]` or `["structured_output"]`), and the gateway dynamically routes to the best healthy, available provider.
@@ -416,7 +416,7 @@ const openai = new OpenAI({
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
-  const { messages, model = 'groq/llama-3.3-70b-versatile' } = await req.json();
+  const { messages, model = 'auto:text' } = await req.json();
 
   const response = await openai.chat.completions.create({
     model,
@@ -424,43 +424,35 @@ export async function POST(req: Request) {
     messages,
   });
 
-  const stream = OpenAIStream(response);
+  const stream = OpenAIStream(response as any);
   return new StreamingTextResponse(stream);
 }
 ```
 
-#### 2. Streaming UI Component (`app/page.tsx`)
-```tsx
-'use client';
+#### 2. Alternative Zero-Dependency Native SSE Handler (`app/api/chat-native/route.ts`)
+```typescript
+export const runtime = 'nodejs';
 
-import { useChat } from 'ai/react';
+export async function POST(req: Request) {
+  const { messages, model = 'auto:text' } = await req.json();
+  const gatewayUrl = process.env.FREE_AI_GATEWAY_URL || 'http://localhost:3000/v1';
 
-export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const gatewayResponse = await fetch(`${gatewayUrl}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.FREE_AI_API_KEY || 'local'}`,
+    },
+    body: JSON.stringify({ model, messages, stream: true }),
+  });
 
-  return (
-    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-      {messages.map(m => (
-        <div key={m.id} className="whitespace-pre-wrap">
-          {m.role === 'user' ? 'User: ' : 'AI: '}
-          {m.content}
-        </div>
-      ))}
-
-      <form onSubmit={handleSubmit}>
-        <input
-          className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
-          value={input}
-          placeholder="Say something..."
-          onChange={handleInputChange}
-        />
-      </form>
-    </div>
-  );
+  return new Response(gatewayResponse.body, {
+    headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' },
+  });
 }
 ```
 
-Check out the complete runnable template in [`examples/nextjs-chat/`](examples/nextjs-chat/).
+Check out the full interactive template with model and endpoint selection in [`examples/nextjs-chat/`](examples/nextjs-chat/).
 
 ---
 

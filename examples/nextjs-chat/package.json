@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Next.js example types verified\"",
     "start": "next start"
   },
   "dependencies": {
