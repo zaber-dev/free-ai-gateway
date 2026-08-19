@@ -6,7 +6,7 @@ export class JinaAdapter extends BaseProvider {
   public static readonly providerId = "jina_ai";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.JINA_API_KEY;
+    const apiKey = this.getApiKey("JINA_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing JINA_API_KEY", 401);
     }

@@ -6,7 +6,7 @@ export class VoyageAdapter extends BaseProvider {
   public static readonly providerId = "voyage_ai";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.VOYAGE_API_KEY;
+    const apiKey = this.getApiKey("VOYAGE_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing VOYAGE_API_KEY", 401);
     }

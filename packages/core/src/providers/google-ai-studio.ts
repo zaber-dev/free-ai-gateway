@@ -6,7 +6,7 @@ export class GoogleAIStudioAdapter extends BaseProvider {
   public static readonly providerId = "google_ai_studio";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.GOOGLE_API_KEY;
+    const apiKey = this.getApiKey("GOOGLE_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing GOOGLE_API_KEY", 401);
     }

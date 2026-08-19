@@ -6,7 +6,7 @@ export class OpenRouterAdapter extends BaseProvider {
   public static readonly providerId = "openrouter";
 
   async invoke(request: UnifiedRequest, model: ProviderModel): Promise<UnifiedResponse> {
-    const apiKey = process.env.OPENROUTER_API_KEY;
+    const apiKey = this.getApiKey("OPENROUTER_API_KEY");
     if (!apiKey) {
       throw new ProviderError("Missing OPENROUTER_API_KEY", 401);
     }
