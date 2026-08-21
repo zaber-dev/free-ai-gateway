@@ -9,6 +9,23 @@ export interface RateLimitSpec {
   tpd?: number;
 }
 
+export type RetryJitter = "full" | "decorrelated";
+
+export interface RetryPolicy {
+  /** Number of same-provider HTTP retries after the initial transport attempt. */
+  maxTransportRetries?: number;
+  /** Base delay used by full/decorrelated jitter. Defaults to 1000 ms. */
+  baseDelayMs?: number;
+  /** Maximum delay used by full/decorrelated jitter. Defaults to 5000 ms. */
+  maxDelayMs?: number;
+  /** Jitter algorithm used when a retry/failover delay is applied. Defaults to full jitter. */
+  jitter?: RetryJitter;
+  /** Maximum provider/model attempts for one routed request, including the initial attempt. */
+  maxProviderAttempts?: number;
+  /** Per-capability provider/model attempt caps; the strictest matching cap wins. */
+  maxProviderAttemptsByCapability?: Partial<Record<Capability, number>>;
+}
+
 export interface ProviderModel {
   id: string;
   capabilities: Capability[];
