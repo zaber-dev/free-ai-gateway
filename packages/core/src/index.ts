@@ -17,6 +17,8 @@ export {
 export type {
   LimitScope,
   RateLimitSpec,
+  RetryJitter,
+  RetryPolicy,
   ProviderModel,
   ProviderConfig,
   UnifiedRequest,
