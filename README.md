@@ -186,6 +186,8 @@ const completion = await client.chat.completions.create({
 console.log(completion.choices[0].message.content);
 ```
 
+For a runnable Python version using the official OpenAI SDK and LangChain, see [examples/python-langchain](examples/python-langchain/README.md).
+
 ---
 
 ### Option B: Embedding `@free-ai-gateway/core` as a TypeScript Library
