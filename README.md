@@ -61,6 +61,7 @@ flowchart TD
 | **`@free-ai-gateway/cli`** | `packages/cli` | Terminal AI assistant, interactive chat REPL, model catalog, and diagnostics tool. | `@free-ai-gateway/core`, `@free-ai-gateway/skills` |
 | **`@free-ai-gateway/gateway`** | `apps/gateway` | High-throughput Fastify HTTP proxy serving OpenAI-compatible endpoints with auto-discovery and SSE. | `@free-ai-gateway/core`, `fastify` |
 | **`examples/nextjs-chat`** | `examples/nextjs-chat` | Fullstack Next.js 14+ App Router demo with Vercel AI SDK & zero-dep native SSE streams. | `ai`, `openai`, `next`, `react` |
+| **`examples/python-langchain`** | `examples/python-langchain` | Python walkthrough demonstrating official OpenAI SDK & LangChain integration. | `openai`, `langchain-openai` |
 | **`examples/collections`** | `examples/collections` | Complete Postman v2.1 and Bruno collections covering all 19 API endpoints. | Standard JSON / `.bru` suites |
 
 ---

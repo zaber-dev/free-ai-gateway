@@ -19,6 +19,7 @@ Welcome to the definitive learning guide for **Free-AI Gateway**! Whether you ar
    - [Tutorial 3: Connecting Your IDE (Cursor, Claude, Antigravity)](#tutorial-3-connecting-your-ide-cursor-claude-antigravity)
    - [Tutorial 4: Terminal AI & REPL with the CLI](#tutorial-4-terminal-ai--repl-with-the-cli)
    - [Tutorial 5: Next.js 14+ App Router & Vercel AI SDK Integration](#tutorial-5-nextjs-14-app-router--vercel-ai-sdk-integration)
+   - [Tutorial 6: Python & LangChain Integration](#tutorial-6-python--langchain-integration)
 9. [Advanced Patterns & FAQ](#-advanced-patterns--faq)
 
 ---
@@ -453,6 +454,32 @@ export async function POST(req: Request) {
 ```
 
 Check out the full interactive template with model and endpoint selection in [`examples/nextjs-chat/`](examples/nextjs-chat/).
+
+---
+
+### Tutorial 6: Python & LangChain Integration
+
+Free-AI Gateway's OpenAI compatibility makes it trivial to use with Python-based AI frameworks like LangChain or the official OpenAI SDK.
+
+For a complete runnable walkthrough, see the [`examples/python-langchain/`](examples/python-langchain/) directory.
+
+#### Basic LangChain Example:
+```python
+import os
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+
+# Point LangChain to the local Free-AI Gateway
+chat = ChatOpenAI(
+    model="auto:reasoning",
+    base_url=os.getenv("FREE_AI_GATEWAY_URL", "http://localhost:3000/v1"),
+    api_key=os.getenv("FREE_AI_API_KEY", "free-ai-gateway-local"),
+    streaming=True
+)
+
+for chunk in chat.stream([HumanMessage(content="Explain quantum computing.")]):
+    print(chunk.content, end="", flush=True)
+```
 
 ---
 
