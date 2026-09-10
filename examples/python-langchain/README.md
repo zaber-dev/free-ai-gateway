@@ -18,7 +18,7 @@ git clone https://github.com/zaber-dev/free-ai-gateway.git
 cd free-ai-gateway
 ```
 
-### 2. Start the Free AI Gateway
+### 2. Start the Free-AI Gateway
 Ensure the gateway proxy is running locally on port `3000`. From the root of the repository:
 ```bash
 npm run build
