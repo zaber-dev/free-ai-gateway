@@ -54,7 +54,7 @@ Create a `.env` file with the following:
 FREE_AI_GATEWAY_URL=http://localhost:3000/v1
 FREE_AI_API_KEY=free-ai-gateway-local
 ```
-*(Note: For local testing with the gateway, real API keys are not needed here—the gateway handles provider keys centrally.)*
+*(Note: The example connects to the local gateway using the default gateway credentials. To receive model responses, configure at least one supported provider API key in the repository root .env file. See the root .env.example for available providers.)*
 
 ### 6. Run the Example
 Execute the Python script:
