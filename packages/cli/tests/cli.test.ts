@@ -116,12 +116,23 @@ describe("Free-AI Gateway CLI", () => {
     };
 
     try {
-      await runCli(["models", "-f", "json", "--capability=text", "-p", "groq"]);
+      await runCli([
+        "models",
+        "-f",
+        "json",
+        "--capability=text",
+        "-p",
+        "groq",
+      ]);
+
       const parsed = JSON.parse(output.trim());
+
       assert.ok(Array.isArray(parsed));
       assert.ok(parsed.length > 0);
       assert.ok(parsed.every((m: any) => m.provider === "groq"));
-      assert.ok(parsed.every((m: any) => m.capabilities.includes("text")));
+      assert.ok(
+        parsed.every((m: any) => m.capabilities.includes("text"))
+      );
     } finally {
       console.log = originalLog;
     }
@@ -130,6 +141,7 @@ describe("Free-AI Gateway CLI", () => {
   it("should show version when requested with --version", async () => {
     let output = "";
     const originalLog = console.log;
+
     console.log = (...args: any[]) => {
       output += args.join(" ") + "\n";
     };
@@ -139,6 +151,48 @@ describe("Free-AI Gateway CLI", () => {
       assert.ok(output.includes("free-ai-gateway/cli v1.1.0"));
     } finally {
       console.log = originalLog;
+    }
+  });
+
+  it("should stream prompt output when --stream is provided", async () => {
+    let output = "";
+
+    const originalWrite = process.stdout.write;
+
+    process.stdout.write = ((chunk: string | Uint8Array) => {
+      output += chunk.toString();
+      return true;
+    }) as typeof process.stdout.write;
+
+    const originalFetch = globalThis.fetch;
+
+    globalThis.fetch = (async () => {
+      const sseResponse =
+        'data: {"choices":[{"delta":{"role":"assistant"}}]}\n\n' +
+        'data: {"choices":[{"delta":{"content":"Hello "}}]}\n\n' +
+        'data: {"choices":[{"delta":{"content":"world!"}}]}\n\n' +
+        "data: [DONE]\n\n";
+
+      return new Response(sseResponse, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/event-stream",
+        },
+      });
+    }) as typeof globalThis.fetch;
+
+    try {
+      await runCli([
+        "prompt",
+        "Say hello",
+        "--stream",
+      ]);
+
+      assert.ok(output.includes("Routing request through Free-AI Gateway"));
+      assert.ok(output.includes("Hello world!"));
+    } finally {
+      process.stdout.write = originalWrite;
+      globalThis.fetch = originalFetch;
     }
   });
 });

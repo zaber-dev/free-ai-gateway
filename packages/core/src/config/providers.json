@@ -1450,31 +1450,10 @@
       "confidence": "official",
       "models": [
         {
-          "id": "llama3.2",
+          "id": "llama3.2:3b",
           "capabilities": [
             "text",
             "code"
-          ]
-        },
-        {
-          "id": "deepseek-r1:7b",
-          "capabilities": [
-            "text",
-            "code",
-            "reasoning"
-          ]
-        },
-        {
-          "id": "qwen2.5-coder",
-          "capabilities": [
-            "text",
-            "code"
-          ]
-        },
-        {
-          "id": "mistral",
-          "capabilities": [
-            "text"
           ]
         }
       ]
