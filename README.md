@@ -302,6 +302,25 @@ npx @free-ai-gateway/cli doctor
 
 ---
 
+### Option F: Python + LangChain
+
+Use Free-AI Gateway from Python applications through the OpenAI-compatible
+API and LangChain.
+
+The complete example is available in
+[`examples/python-langchain/`](examples/python-langchain/).
+
+It demonstrates:
+
+- OpenAI Python SDK integration
+- Capability-based routing with `auto:text`
+- Reasoning routing with `auto:reasoning`
+- LangChain `ChatOpenAI`
+- Streaming responses
+
+See the [Python + LangChain example guide](examples/python-langchain/README.md)
+for setup and usage instructions.
+
 ## 🏛️ Monorepo Structure
 
 ```
@@ -369,6 +388,7 @@ free-ai-gateway/
 │
 ├── examples/
 │   ├── nextjs-chat/                 # Next.js 14+ App Router & Vercel AI SDK example
+│   ├── python-langchain/            # Python OpenAI SDK & LangChain integration
 │   └── collections/                 # Ready-to-import Postman & Bruno API suites
 │
 ├── tests/

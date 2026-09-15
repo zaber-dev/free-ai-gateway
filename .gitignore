@@ -30,5 +30,6 @@ coverage/
 Thumbs.db
 .idea/
 .vscode/
+.venv/
 *.swp
 *.swo

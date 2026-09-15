@@ -19,6 +19,7 @@ Welcome to the definitive learning guide for **Free-AI Gateway**! Whether you ar
    - [Tutorial 3: Connecting Your IDE (Cursor, Claude, Antigravity)](#tutorial-3-connecting-your-ide-cursor-claude-antigravity)
    - [Tutorial 4: Terminal AI & REPL with the CLI](#tutorial-4-terminal-ai--repl-with-the-cli)
    - [Tutorial 5: Next.js 14+ App Router & Vercel AI SDK Integration](#tutorial-5-nextjs-14-app-router--vercel-ai-sdk-integration)
+   - [Tutorial 6: Python + LangChain Integration](#tutorial-6-python--langchain-integration)
 9. [Advanced Patterns & FAQ](#-advanced-patterns--faq)
 
 ---
@@ -454,6 +455,62 @@ export async function POST(req: Request) {
 
 Check out the full interactive template with model and endpoint selection in [`examples/nextjs-chat/`](examples/nextjs-chat/).
 
+---
+### Tutorial 6: Python + LangChain Integration
+
+Free-AI Gateway provides an OpenAI-compatible API, allowing Python
+applications to use the gateway through the official OpenAI Python SDK
+and LangChain.
+
+The complete example is available at
+[`examples/python-langchain/`](examples/python-langchain/).
+
+#### Install Python dependencies
+
+```bash
+cd examples/python-langchain
+python -m venv .venv
+pip install -r requirements.txt
+#### Connect the OpenAI Python client
+
+Point the OpenAI client to the local Free-AI Gateway:
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:3000/v1",
+    api_key="not-needed",
+)
+#### Connect the OpenAI Python client
+
+Point the OpenAI client to the local Free-AI Gateway:
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:3000/v1",
+    api_key="not-needed",
+)
+response = client.chat.completions.create(
+    model="auto:reasoning",
+    messages=[
+        {"role": "user", "content": "Solve a reasoning problem."}
+    ],
+)
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(
+    model="auto:text",
+    base_url="http://localhost:3000/v1",
+    api_key="not-needed",
+    streaming=True,
+)
+
+for chunk in llm.stream("Explain what an AI gateway does."):
+    print(chunk.content, end="", flush=True)
+```
 ---
 
 ## ❓ Advanced Patterns & FAQ
