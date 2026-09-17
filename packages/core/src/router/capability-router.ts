@@ -1,7 +1,13 @@
-import { UnifiedRequest, UnifiedResponse } from "../types/contracts";
+import { RetryPolicy, UnifiedRequest, UnifiedResponse } from "../types/contracts";
 import { Registry } from "../providers/registry";
 import { QuotaTracker } from "../resilience/quota-tracker";
 import { CircuitBreaker } from "../resilience/circuit-breaker";
+import {
+  defaultRetryRuntime,
+  initialRetryDelay,
+  retryDelay,
+  RetryRuntime,
+} from "../resilience/retry-policy";
 import { MetricsTracker } from "../observability/metrics-tracker";
 import { EventBus } from "../observability/event-bus";
 import { NoProviderAvailableError } from "../errors/errors";
@@ -23,6 +29,38 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   });
 }
 
+function mergeRetryPolicy(base: RetryPolicy, override?: RetryPolicy): RetryPolicy {
+  if (!override) return base;
+  return {
+    ...base,
+    ...override,
+    maxProviderAttemptsByCapability: {
+      ...(base.maxProviderAttemptsByCapability ?? {}),
+      ...(override.maxProviderAttemptsByCapability ?? {}),
+    },
+  };
+}
+
+function normalizeAttemptLimit(value: number | undefined): number | undefined {
+  if (value === undefined || !Number.isFinite(value)) return undefined;
+  return Math.max(1, Math.floor(value));
+}
+
+function maxProviderAttempts(request: UnifiedRequest, policy: RetryPolicy): number {
+  const limits: number[] = [];
+  const globalLimit = normalizeAttemptLimit(policy.maxProviderAttempts);
+  if (globalLimit !== undefined) limits.push(globalLimit);
+
+  for (const capability of request.capabilities) {
+    const capabilityLimit = normalizeAttemptLimit(
+      policy.maxProviderAttemptsByCapability?.[capability]
+    );
+    if (capabilityLimit !== undefined) limits.push(capabilityLimit);
+  }
+
+  return limits.length > 0 ? Math.min(...limits) : Number.POSITIVE_INFINITY;
+}
+
 /**
  * Enterprise Capability Router
  * Coordinates candidate selection, health filtering, circuit breaking,
@@ -35,13 +73,18 @@ export class CapabilityRouter {
     public readonly breaker: CircuitBreaker,
     public readonly metricsTracker?: MetricsTracker,
     public readonly eventBus?: EventBus,
-    public readonly strategy: IRoutingStrategy = new AdaptiveHealthStrategy()
+    public readonly strategy: IRoutingStrategy = new AdaptiveHealthStrategy(),
+    public readonly retryPolicy: RetryPolicy = {},
+    private readonly retryRuntime: RetryRuntime = defaultRetryRuntime
   ) {}
 
   /**
    * Routes a unified capability request to the optimal healthy provider with automatic failover.
    */
-  public async route(request: UnifiedRequest): Promise<UnifiedResponse> {
+  public async route(
+    request: UnifiedRequest,
+    retryPolicyOverride?: RetryPolicy
+  ): Promise<UnifiedResponse> {
     const requestId = `req_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
     this.eventBus?.emit("request:start", {
@@ -61,8 +104,16 @@ export class CapabilityRouter {
 
     const attempted: string[] = [];
     const timeoutMs = request.timeoutMs ?? 30_000;
+    const retryPolicy = mergeRetryPolicy(this.retryPolicy, retryPolicyOverride);
+    const attemptLimit = maxProviderAttempts(request, retryPolicy);
+    const hasRetryPolicy = Object.keys(retryPolicy).length > 0;
+    let previousDelayMs = hasRetryPolicy ? initialRetryDelay(retryPolicy) : 0;
+    let retryIndex = 0;
 
-    for (const { adapter, model } of candidates) {
+    for (let candidateIndex = 0; candidateIndex < candidates.length; candidateIndex++) {
+      if (attempted.length >= attemptLimit) break;
+
+      const { adapter, model } = candidates[candidateIndex];
       const key = `${adapter.config.id}:${model.id}`;
 
       // 1. Check proactive quota limits (RPM, RPD, TPM, TPD & cooldown)
@@ -117,7 +168,21 @@ export class CapabilityRouter {
           error: err?.message || String(err),
         });
 
-        if (!retryable) continue;
+        if (!retryable) break;
+
+        const canAttemptAgain =
+          attempted.length < attemptLimit && candidateIndex < candidates.length - 1;
+        if (canAttemptAgain && hasRetryPolicy) {
+          const delayMs = retryDelay(
+            retryIndex,
+            previousDelayMs,
+            retryPolicy,
+            this.retryRuntime.random
+          );
+          retryIndex += 1;
+          previousDelayMs = delayMs;
+          await this.retryRuntime.sleep(delayMs);
+        }
       }
     }
 
@@ -133,8 +198,17 @@ export async function route(
   registry: Registry,
   quota: QuotaTracker,
   breaker: CircuitBreaker,
-  metricsTracker?: MetricsTracker
+  metricsTracker?: MetricsTracker,
+  retryPolicy?: RetryPolicy
 ): Promise<UnifiedResponse> {
-  const router = new CapabilityRouter(registry, quota, breaker, metricsTracker);
+  const router = new CapabilityRouter(
+    registry,
+    quota,
+    breaker,
+    metricsTracker,
+    undefined,
+    undefined,
+    retryPolicy
+  );
   return router.route(request);
 }
