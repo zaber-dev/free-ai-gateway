@@ -2,6 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { HttpClient, HttpClientRuntime } from "../src/transport/http-client";
 import { CapabilityRouter } from "../src/router/capability-router";
+import { IRoutingStrategy } from "../src/router/routing-strategy";
 import { Registry } from "../src/providers/registry";
 import { QuotaTracker } from "../src/resilience/quota-tracker";
 import { CircuitBreaker } from "../src/resilience/circuit-breaker";
@@ -14,6 +15,10 @@ interface ResponseSpec {
   body?: unknown;
   headers?: Record<string, string>;
 }
+
+const fixedOrderStrategy: IRoutingStrategy = {
+  rank: (candidates) => [...candidates],
+};
 
 function makeHttpRuntime(responses: ResponseSpec[], randomValue = 0.5) {
   const delays: number[] = [];
@@ -96,7 +101,7 @@ function makeRouter(
     new CircuitBreaker(),
     undefined,
     undefined,
-    undefined,
+    fixedOrderStrategy,
     retryPolicy,
     {
       random: () => randomValue,
