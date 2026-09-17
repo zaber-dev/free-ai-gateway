@@ -24,12 +24,15 @@ Options:
   --provider=<id>       Force preferred provider (e.g. groq, google, sambanova, openrouter)
   --model=<id>          Force preferred model identifier
   --format=<format>     Output format for models command: text, json, markdown
+  --stream, -s          Stream prompt output in real time
   --help, -h            Show this help manual
   --version, -v         Display CLI version
 
 Examples:
   free-ai "Explain quantum computing in one sentence"
   free-ai prompt "Write a quicksort in TypeScript" --capability=code
+  free-ai prompt "Explain recursion" --stream
+  free-ai prompt "Explain recursion" -s
   free-ai chat --capability=reasoning
   free-ai models
   free-ai models --format=json
@@ -55,8 +58,10 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<vo
   if (command === "models") {
     const modelsOpts: ModelsOptions = {};
     const rest = argv.slice(1);
+
     for (let i = 0; i < rest.length; i++) {
       const arg = rest[i];
+
       if (arg.startsWith("--format=")) {
         modelsOpts.format = arg.replace("--format=", "");
       } else if ((arg === "--format" || arg === "-f") && rest[i + 1]) {
@@ -74,6 +79,7 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<vo
         i++;
       }
     }
+
     listModelsCommand(modelsOpts);
     return;
   }
@@ -90,35 +96,64 @@ export async function runCli(argv: string[] = process.argv.slice(2)): Promise<vo
 
   if (command === "chat") {
     const chatOpts: ChatOptions = {};
+
     for (const arg of argv.slice(1)) {
-      if (arg.startsWith("--capability=")) chatOpts.capability = arg.replace("--capability=", "");
-      if (arg.startsWith("--provider=")) chatOpts.provider = arg.replace("--provider=", "");
-      if (arg.startsWith("--model=")) chatOpts.model = arg.replace("--model=", "");
+      if (arg.startsWith("--capability=")) {
+        chatOpts.capability = arg.replace("--capability=", "");
+      }
+
+      if (arg.startsWith("--provider=")) {
+        chatOpts.provider = arg.replace("--provider=", "");
+      }
+
+      if (arg.startsWith("--model=")) {
+        chatOpts.model = arg.replace("--model=", "");
+      }
     }
+
     await chatCommand(chatOpts);
     return;
   }
 
   if (command === "prompt" || !command.startsWith("-")) {
     const promptText = command === "prompt" ? argv[1] : command;
+
     if (!promptText) {
-      console.error("❌ Error: Missing prompt text. Run 'free-ai --help' for usage.");
+      console.error(
+        "❌ Error: Missing prompt text. Run 'free-ai --help' for usage."
+      );
       process.exitCode = 1;
       return;
     }
 
     const promptOpts: PromptOptions = {};
-    const remainingArgs = command === "prompt" ? argv.slice(2) : argv.slice(1);
+    const remainingArgs =
+      command === "prompt" ? argv.slice(2) : argv.slice(1);
+
     for (const arg of remainingArgs) {
-      if (arg.startsWith("--capability=")) promptOpts.capability = arg.replace("--capability=", "");
-      if (arg.startsWith("--provider=")) promptOpts.provider = arg.replace("--provider=", "");
-      if (arg.startsWith("--model=")) promptOpts.model = arg.replace("--model=", "");
+      if (arg.startsWith("--capability=")) {
+        promptOpts.capability = arg.replace("--capability=", "");
+      }
+
+      if (arg.startsWith("--provider=")) {
+        promptOpts.provider = arg.replace("--provider=", "");
+      }
+
+      if (arg.startsWith("--model=")) {
+        promptOpts.model = arg.replace("--model=", "");
+      }
+
+      if (arg === "--stream" || arg === "-s") {
+        promptOpts.stream = true;
+      }
     }
 
     await promptCommand(promptText, promptOpts);
     return;
   }
 
-  console.error(`❌ Unknown command: "${command}". Run "free-ai --help" for usage.`);
+  console.error(
+    `❌ Unknown command: "${command}". Run "free-ai --help" for usage.`
+  );
   process.exitCode = 1;
 }
