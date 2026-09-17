@@ -19,6 +19,7 @@ Welcome to the definitive learning guide for **Free-AI Gateway**! Whether you ar
    - [Tutorial 3: Connecting Your IDE (Cursor, Claude, Antigravity)](#tutorial-3-connecting-your-ide-cursor-claude-antigravity)
    - [Tutorial 4: Terminal AI & REPL with the CLI](#tutorial-4-terminal-ai--repl-with-the-cli)
    - [Tutorial 5: Next.js 14+ App Router & Vercel AI SDK Integration](#tutorial-5-nextjs-14-app-router--vercel-ai-sdk-integration)
+   - [Tutorial 6: Python OpenAI and LangChain Clients](#tutorial-6-python-openai-and-langchain-clients)
 9. [Advanced Patterns & FAQ](#-advanced-patterns--faq)
 
 ---
@@ -453,6 +454,24 @@ export async function POST(req: Request) {
 ```
 
 Check out the full interactive template with model and endpoint selection in [`examples/nextjs-chat/`](examples/nextjs-chat/).
+
+---
+
+### Tutorial 6: Python OpenAI and LangChain Clients
+
+The gateway is also compatible with the official OpenAI Python SDK and LangChain. The runnable example in [`examples/python-langchain/`](examples/python-langchain/README.md) uses both clients against the same local endpoint.
+
+After starting the gateway and configuring at least one provider, create a virtual environment and run the example:
+
+```bash
+cd examples/python-langchain
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
+```
+
+The example first sends a non-streaming `auto:text` request through the OpenAI SDK. It then streams an `auto:reasoning` request through LangChain's `ChatOpenAI` client. Set `FREE_AI_GATEWAY_URL` or `FREE_AI_GATEWAY_API_KEY` to override the default local connection settings.
 
 ---
 
